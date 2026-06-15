@@ -9,162 +9,197 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --verde:#A6E04B; --azul:#285FCD; --violeta:#8A51EB;
-  --bg:#0f1115; --card:#181b22; --card2:#1f232c; --line:#2a2f3a;
-  --txt:#f3f5f8; --muted:#9aa3b2;
-  --rojo:#ff5a5a; --naranja:#ff9f43; --amar:#ffd23f; --ok:#26c281;
-  --c-ing:var(--verde); --c-gas:var(--naranja); --c-warn:var(--amar);
-  --r:16px;
+  --r:18px;
+  --txt:#1e2440; --muted:#5b6488;
+  --glass:rgba(255,255,255,.55); --glass2:rgba(255,255,255,.78);
+  --line:rgba(70,80,140,.16);
+  --shadow:0 10px 34px rgba(40,50,110,.12);
+  --c-ing:#0c9d6b; --c-gas:#e0457b; --c-deb:#7c4dff;
+  --accent:#0aa5c4; --accent2:#7c4dff; --azul:#2f6bff;
+  --rojo:#e0457b; --naranja:#e4733b; --amar:#b07d0a; --ok:#0c9d6b; --c-warn:#b07d0a;
+  --blur:saturate(150%) blur(16px);
 }
-body.light{
-  --bg:#eef1f6; --card:#ffffff; --card2:#f1f4f9; --line:#dde3ec;
-  --txt:#1b2433; --muted:#6b7585;
-  --c-ing:#3f9000; --c-gas:#cf7212; --c-warn:#a8780a;
-}
-body.light .kpi,body.light .add,body.light .list,body.light .goal,
-body.light .voicebox,body.light .al,body.light .empty-ok{box-shadow:0 1px 3px rgba(20,30,50,.07)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',system-ui,sans-serif;background:var(--bg);color:var(--txt);padding:18px;max-width:980px;margin:0 auto;-webkit-font-smoothing:antialiased}
+html,body{min-height:100%}
+body{font-family:'Nunito',system-ui,sans-serif;color:var(--txt);padding:18px;max-width:980px;margin:0 auto;-webkit-font-smoothing:antialiased;position:relative}
+body::before{content:'';position:fixed;inset:-10%;z-index:-1;background-color:#e7ebff;
+  background-image:
+   radial-gradient(38% 44% at 12% 12%, rgba(124,77,255,.40), transparent 60%),
+   radial-gradient(40% 46% at 88% 8%, rgba(10,165,196,.40), transparent 60%),
+   radial-gradient(46% 50% at 82% 88%, rgba(224,69,123,.32), transparent 62%),
+   radial-gradient(44% 50% at 10% 92%, rgba(12,157,107,.30), transparent 62%);}
+body.dark{
+  --txt:#eaf0ff; --muted:#9aa6cc;
+  --glass:rgba(255,255,255,.07); --glass2:rgba(255,255,255,.11);
+  --line:rgba(255,255,255,.14);
+  --shadow:0 12px 40px rgba(0,0,0,.45);
+  --c-ing:#34d399; --c-gas:#fb7185; --c-deb:#c08bff;
+  --accent:#22d3ee; --accent2:#a78bfa; --azul:#6aa8ff;
+  --rojo:#fb7185; --naranja:#fb923c; --amar:#fbbf24; --ok:#34d399; --c-warn:#fbbf24;
+}
+body.dark::before{background-color:#070a16;
+  background-image:
+   radial-gradient(40% 46% at 12% 10%, rgba(124,58,237,.55), transparent 60%),
+   radial-gradient(42% 48% at 88% 6%, rgba(6,182,212,.45), transparent 60%),
+   radial-gradient(48% 52% at 84% 90%, rgba(217,70,239,.40), transparent 62%),
+   radial-gradient(46% 52% at 8% 92%, rgba(16,185,129,.34), transparent 62%);}
+
+.ic{display:inline-block;vertical-align:-.18em;flex:none}
 h1{font-size:1.5rem;font-weight:900;letter-spacing:-.5px}
 .sub{color:var(--muted);font-size:.85rem;font-weight:600}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .between{justify-content:space-between}
-button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;font-weight:800;transition:.15s}
+button{font-family:inherit;cursor:pointer;border:none;border-radius:12px;font-weight:800;transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:7px}
 button:active{transform:scale(.97)}
-input,select,textarea{font-family:inherit;background:var(--card2);border:1.5px solid var(--line);color:var(--txt);padding:11px 12px;border-radius:11px;font-size:.95rem;font-weight:700;width:100%}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--azul)}
+input,select,textarea{font-family:inherit;background:var(--glass2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border:1px solid var(--line);color:var(--txt);padding:11px 12px;border-radius:12px;font-size:.95rem;font-weight:700;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+select option{background:#ffffff;color:#1e2440;font-weight:700}
+body.dark select option{background:#141a2b;color:#eaf0ff}
 label{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:800;display:block;margin-bottom:5px}
+
+.kpi,.goal,.al,.empty-ok,.voicetrigger,.add,.list,.modal{
+  background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border:1px solid var(--line);box-shadow:var(--shadow)}
 
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:18px}
 .monthsel{display:flex;align-items:center;gap:8px}
 .monthsel select{width:auto;padding:9px 12px;font-weight:800}
-.navm{background:var(--card2);border:1.5px solid var(--line);color:var(--txt);width:34px;height:40px;border-radius:10px;font-size:.85rem}
-.navm:hover{border-color:var(--azul)}
-.themebtn{background:var(--card2);border:1.5px solid var(--line);color:var(--txt);width:40px;height:40px;border-radius:11px;font-size:1.05rem}
+.navm,.themebtn{background:var(--glass2);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border:1px solid var(--line);color:var(--txt);height:40px;border-radius:12px}
+.navm{width:36px}.themebtn{width:42px}
+.navm:hover,.themebtn:hover{border-color:var(--accent)}
 
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
-.kpi{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:14px}
+.kpi{border-radius:var(--r);padding:15px}
 .kpi .lab{font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:800;margin-bottom:6px}
 .kpi .val{font-size:1.35rem;font-weight:900;letter-spacing:-.5px}
 .kpi.ing .val{color:var(--c-ing)} .kpi.gas .val{color:var(--c-gas)}
-.kpi.bal.pos .val{color:var(--ok)} .kpi.bal.neg .val{color:var(--rojo)}
-.kpi.deb .val{color:var(--violeta)}
+.kpi.bal .val{color:var(--azul)}
+.kpi.deb .val{color:var(--rojo)}
 
-.goal{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:13px 15px;margin-bottom:16px}
-.bar{height:9px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:8px}
-.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--verde),var(--azul));border-radius:99px;transition:.4s}
+.goal{border-radius:var(--r);padding:14px 16px;margin-bottom:16px}
+.bar{height:9px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:9px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:.4s}
 
 .alerts{margin-bottom:16px}
-.alert-head{font-weight:900;font-size:1rem;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.alert-head{font-weight:900;font-size:1rem;margin-bottom:9px;display:flex;align-items:center;gap:8px;color:var(--txt)}
 .badge{background:var(--rojo);color:#fff;border-radius:99px;padding:1px 9px;font-size:.78rem;font-weight:900}
-.al{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card);border-left:5px solid var(--line);border-radius:12px;padding:11px 14px;margin-bottom:8px}
-.al.r{border-left-color:var(--rojo)} .al.o{border-left-color:var(--naranja)} .al.y{border-left-color:var(--amar)}
-.al .desc{font-weight:800}
-.al .when{font-size:.78rem;font-weight:800}
-.al.r .when{color:var(--rojo)} .al.o .when{color:var(--naranja)} .al.y .when{color:var(--c-warn)}
+.al{display:flex;justify-content:space-between;align-items:center;gap:10px;border-radius:14px;padding:11px 14px;margin-bottom:8px;border-left:4px solid var(--line)}
+.al.r{border-left-color:var(--rojo)}.al.o{border-left-color:var(--naranja)}.al.y{border-left-color:var(--amar)}
+.al .desc{font-weight:800}.al .when{font-size:.78rem;font-weight:800}
+.al.r .when{color:var(--rojo)}.al.o .when{color:var(--naranja)}.al.y .when{color:var(--c-warn)}
 .al .amt{font-weight:900;white-space:nowrap}
-.al button{background:var(--ok);color:#062;padding:7px 13px;font-size:.82rem}
-.empty-ok{background:var(--card);border:1.5px dashed var(--line);border-radius:12px;padding:14px;text-align:center;color:var(--ok);font-weight:800}
+.al button{background:var(--ok);color:#063;padding:7px 12px;font-size:.82rem}
+body.dark .al button{color:#04231a}
+.empty-ok{border-radius:14px;padding:14px;text-align:center;color:var(--ok);font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px}
 
-/* VOZ */
-.voicetrigger{width:100%;background:var(--violeta);color:#fff;padding:14px;font-size:1rem;margin-bottom:16px}
-.voicebox{background:var(--card);border:1.5px solid var(--violeta);border-radius:var(--r);padding:16px;margin-bottom:16px}
-.voicebox textarea{min-height:62px;resize:vertical;margin-top:10px}
-.micbtn{background:var(--violeta);color:#fff;padding:12px 22px;font-size:.95rem}
-.micbtn.live{animation:pulse 1s infinite;background:var(--rojo)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.interpbtn{background:var(--azul);color:#fff;padding:12px 22px;font-size:.95rem}
-.pv{margin-top:12px;padding:11px 13px;border-radius:11px;font-weight:700;font-size:.92rem;line-height:1.4}
-.pv.ok{background:rgba(40,95,205,.14);border:1.5px solid var(--azul)}
-.pv.warn{background:rgba(255,159,67,.14);border:1.5px solid var(--naranja)}
+.voicetrigger{width:100%;color:#fff;padding:14px;font-size:1rem;margin-bottom:16px;border-radius:var(--r);background:linear-gradient(120deg,var(--accent2),var(--accent));border:1px solid var(--line)}
 
-.add{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:16px}
+.add{border-radius:var(--r);padding:16px;margin-bottom:16px}
 .tabs{display:flex;gap:8px;margin-bottom:14px}
-.tabs button{flex:1;padding:11px;background:var(--card2);color:var(--muted);border:1.5px solid var(--line);font-size:.95rem}
-.tabs button.on[data-t=ingreso]{background:var(--verde);color:#0a2;border-color:var(--verde)}
-.tabs button.on[data-t=gasto]{background:var(--naranja);color:#5a2c00;border-color:var(--naranja)}
-.tabs button.on[data-t=deuda]{background:var(--violeta);color:#fff;border-color:var(--violeta)}
+.tabs button{flex:1;padding:11px;background:var(--glass2);color:var(--muted);border:1px solid var(--line);font-size:.95rem}
+.tabs button.on[data-t=ingreso]{background:var(--c-ing);color:#042;border-color:transparent}
+.tabs button.on[data-t=gasto]{background:var(--c-gas);color:#fff;border-color:transparent}
+.tabs button.on[data-t=deuda]{background:var(--c-deb);color:#fff;border-color:transparent}
 .formgrid{display:grid;grid-template-columns:1.1fr 2fr 1.2fr;gap:12px;align-items:end}
 .venc-wrap{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-top:12px}
-.bigadd{background:var(--verde);color:#0a2;padding:13px 22px;font-size:1rem;width:100%}
+.bigadd{background:linear-gradient(120deg,var(--accent),var(--accent2));color:#fff;padding:13px 22px;font-size:1rem;width:100%}
 .fijo-chk{display:flex;align-items:center;gap:7px;font-weight:800;color:var(--muted);font-size:.85rem;cursor:pointer;user-select:none}
 .fijo-chk input{width:auto}
 
-.list{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);overflow:hidden}
-.lh{padding:13px 16px;font-weight:900;border-bottom:1.5px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.vbtn{background:var(--card2);color:var(--muted);border:1.5px solid var(--line);padding:7px 14px;font-size:.85rem}
-.vbtn.on{background:var(--azul);color:#fff;border-color:var(--azul)}
+.list{border-radius:var(--r);overflow:hidden}
+.lh{padding:13px 16px;font-weight:900;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.vbtn{background:var(--glass2);color:var(--muted);border:1px solid var(--line);padding:7px 13px;font-size:.85rem}
+.vbtn.on{background:linear-gradient(120deg,var(--accent),var(--accent2));color:#fff;border-color:transparent}
 .item{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:none}
 .dot{width:10px;height:10px;border-radius:50%;flex:none}
-.dot.ingreso{background:var(--verde)} .dot.gasto{background:var(--naranja)} .dot.deuda{background:var(--violeta)}
-.item .d1{font-weight:800;line-height:1.2}
+.dot.ingreso{background:var(--c-ing)}.dot.gasto{background:var(--c-gas)}.dot.deuda{background:var(--c-deb)}
+.item .d1{font-weight:800;line-height:1.2;display:flex;align-items:center;gap:6px}
 .item .d2{font-size:.74rem;color:var(--muted);font-weight:700;margin-top:2px}
 .item .amt{font-weight:900;white-space:nowrap}
-.item .amt.in{color:var(--c-ing)} .item .amt.out{color:var(--txt)}
+.item .amt.in{color:var(--c-ing)}.item .amt.out{color:var(--txt)}
 .acts{display:flex;gap:6px;align-items:center}
-.pill{font-size:.7rem;font-weight:900;padding:4px 9px;border-radius:99px;border:none;white-space:nowrap}
-.pill.pago{background:rgba(38,194,129,.18);color:var(--ok)}
-.pill.impago{background:rgba(255,90,90,.16);color:var(--rojo)}
-.ico{background:var(--card2);color:var(--muted);width:30px;height:30px;border-radius:9px;font-size:.95rem;display:grid;place-items:center}
-.ico:hover{color:var(--txt)}
-.cat-tag{font-size:.68rem;font-weight:800;background:var(--card2);color:var(--muted);padding:2px 8px;border-radius:99px}
+.pill{font-size:.7rem;font-weight:900;padding:5px 10px;border-radius:99px;border:1px solid transparent;white-space:nowrap}
+.pill.pago{background:rgba(12,157,107,.16);color:var(--ok)}
+.pill.impago{background:rgba(224,69,123,.16);color:var(--rojo)}
+.ico{background:var(--glass2);color:var(--muted);width:32px;height:32px;border-radius:10px;border:1px solid var(--line)}
+.ico:hover{color:var(--txt);border-color:var(--accent)}
+.cat-tag{font-size:.68rem;font-weight:800;background:var(--glass2);color:var(--muted);padding:2px 8px;border-radius:99px;border:1px solid var(--line)}
 
-/* CALENDARIO */
 .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:14px}
 .cw{text-align:center;font-size:.7rem;font-weight:800;color:var(--muted);padding-bottom:2px}
-.cc{min-height:64px;background:var(--card2);border:1.5px solid var(--line);border-radius:10px;padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:3px;transition:.12s}
+.cc{min-height:64px;background:var(--glass2);border:1px solid var(--line);border-radius:12px;padding:6px;cursor:pointer;display:flex;flex-direction:column;gap:3px;transition:.12s}
 .cc.empty{background:transparent;border:none;cursor:default}
-.cc.has:hover{border-color:var(--azul)}
-.cc.today{border-color:var(--verde)}
+.cc.has:hover{border-color:var(--accent)}
+.cc.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .cnum{font-size:.8rem;font-weight:800}
-.cc.today .cnum{color:var(--verde)}
+.cc.today .cnum{color:var(--accent)}
 .cdots{display:flex;gap:3px;flex-wrap:wrap}
 .cdot{width:7px;height:7px;border-radius:50%}
-.cdot.ingreso{background:var(--verde)}.cdot.gasto{background:var(--naranja)}.cdot.deuda{background:var(--violeta)}
-.cdot.od{background:var(--rojo);box-shadow:0 0 0 2px rgba(255,90,90,.4)}
+.cdot.ingreso{background:var(--c-ing)}.cdot.gasto{background:var(--c-gas)}.cdot.deuda{background:var(--c-deb)}
+.cdot.od{background:var(--rojo);box-shadow:0 0 0 2px rgba(224,69,123,.4)}
 .cdue{font-size:.62rem;font-weight:800;color:var(--c-gas);margin-top:auto;line-height:1}
 .calleg{display:flex;gap:14px;flex-wrap:wrap;padding:0 16px 14px;font-size:.72rem;font-weight:700;color:var(--muted)}
-.calleg span{display:flex;align-items:center;gap:5px}
-.calleg i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.calleg span{display:flex;align-items:center;gap:5px}.calleg i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+.metrics{padding:16px}
+.mh{font-weight:900;margin:4px 0 10px;font-size:.95rem}
+.mstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.mstat{background:var(--glass2);border:1px solid var(--line);border-radius:12px;padding:11px}
+.mstat .l{font-size:.66rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:800}
+.mstat .v{font-size:1.05rem;font-weight:900;margin-top:4px}
+.mlegend{display:flex;gap:14px;font-size:.72rem;font-weight:700;color:var(--muted);margin:6px 0 14px}
+.mlegend span{display:flex;align-items:center;gap:5px}.mlegend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.catrow{margin-bottom:10px}
+.catrow .top{display:flex;justify-content:space-between;font-size:.82rem;font-weight:800;margin-bottom:4px}
+.catrow .tr{height:9px;border-radius:99px;background:var(--line);overflow:hidden}
+.catrow .tr>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.msvg{width:100%;height:auto;display:block;margin-bottom:6px}
 
 footer{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-footer button{background:var(--card);border:1.5px solid var(--line);color:var(--muted);padding:9px 15px;font-size:.82rem;font-weight:800}
-footer button:hover{color:var(--txt)}
+footer button{background:var(--glass);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border:1px solid var(--line);color:var(--muted);padding:9px 14px;font-size:.82rem;font-weight:800}
+footer button:hover{color:var(--txt);border-color:var(--accent)}
 
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;padding:18px;z-index:50}
+.ov{position:fixed;inset:0;background:rgba(10,12,25,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);display:none;place-items:center;padding:18px;z-index:50}
 .ov.show{display:grid}
-.modal{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:20px;width:100%;max-width:440px;max-height:85vh;overflow:auto}
-.modal h3{margin-bottom:14px;font-weight:900}
+.modal{border-radius:var(--r);padding:20px;width:100%;max-width:440px;max-height:85vh;overflow:auto}
+.modal h3{margin-bottom:14px;font-weight:900;display:flex;align-items:center;gap:8px}
 .modal .g{display:grid;gap:11px}
 .modal .mrow{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.modal .save{background:var(--azul);color:#fff;padding:12px;width:100%;margin-top:4px}
-.dayrow{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card2);border-radius:10px}
+.modal .save{padding:12px;width:100%;margin-top:4px;color:#fff;background:linear-gradient(120deg,var(--accent),var(--accent2))}
+.dayrow{display:flex;align-items:center;gap:10px;padding:10px;background:var(--glass2);border:1px solid var(--line);border-radius:12px}
+
+.micbtn{color:#fff;padding:12px 20px;font-size:.95rem;background:linear-gradient(120deg,var(--accent2),var(--c-gas))}
+.micbtn.live{animation:pulse 1s infinite;background:var(--rojo)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.interpbtn{color:#fff;padding:12px 20px;font-size:.95rem;background:linear-gradient(120deg,var(--accent),var(--accent2))}
+.pv{margin-top:12px;padding:11px 13px;border-radius:12px;font-weight:700;font-size:.92rem;line-height:1.4;border:1px solid var(--line)}
+.pv.ok{background:var(--glass2)}
+.pv.warn{background:rgba(228,115,59,.16)}
 
 @media(max-width:720px){
   .cards{grid-template-columns:1fr 1fr}
-  .formgrid{grid-template-columns:1fr}
-  .venc-wrap{grid-template-columns:1fr}
+  .formgrid,.venc-wrap{grid-template-columns:1fr}
   .item{grid-template-columns:auto 1fr;row-gap:8px}
   .item .amt{grid-column:2;text-align:right}
   .acts{grid-column:1/-1;justify-content:flex-end}
-  .cc{min-height:50px;padding:4px}
-  .cdue{font-size:.55rem}
+  .cc{min-height:50px;padding:4px}.cdue{font-size:.55rem}
+  .mstats{grid-template-columns:1fr}
 }
+
 </style>
 </head>
 <body>
-
 <header>
   <div>
     <h1>Mi Contabilidad</h1>
     <div class="sub">Cargá rápido (o hablando) y que no se te pase ningún vencimiento</div>
   </div>
   <div class="monthsel">
-    <button class="themebtn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
-    <button class="navm" onclick="shiftMonth(-1)" title="Mes anterior">◀</button>
+    <button class="themebtn" id="themeBtn" onclick="toggleTheme()" title="Tema"></button>
+    <button class="navm" onclick="shiftMonth(-1)" title="Mes anterior"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
     <select id="monthSel" onchange="render()"></select>
-    <button class="navm" onclick="shiftMonth(1)" title="Mes siguiente">▶</button>
+    <button class="navm" onclick="shiftMonth(1)" title="Mes siguiente"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
   </div>
 </header>
 
@@ -180,13 +215,13 @@ footer button:hover{color:var(--txt)}
 
 <div class="alerts" id="alerts"></div>
 
-<!-- CARGA MANUAL -->
-<button class="voicetrigger" onclick="openVoice()">🎤 Cargar hablando</button>
+<button class="voicetrigger" onclick="openVoice()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg> Cargar hablando</button>
+
 <div class="add quick">
   <div class="tabs" id="tabs">
-    <button data-t="ingreso" class="on" onclick="setTipo('ingreso')">➕ Ingreso</button>
-    <button data-t="gasto" onclick="setTipo('gasto')">➖ Gasto</button>
-    <button data-t="deuda" onclick="setTipo('deuda')">💳 Deuda</button>
+    <button data-t="ingreso" class="on" onclick="setTipo('ingreso')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Ingreso</button>
+    <button data-t="gasto" onclick="setTipo('gasto')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg> Gasto</button>
+    <button data-t="deuda" onclick="setTipo('deuda')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> Deuda</button>
   </div>
   <div class="formgrid">
     <div><label>Monto $</label><input id="fMonto" type="number" inputmode="numeric" placeholder="0" onkeydown="if(event.key==='Enter')addMov()"></div>
@@ -203,34 +238,97 @@ footer button:hover{color:var(--txt)}
   <div id="addOnlyBtn" style="margin-top:12px;display:none"><button class="bigadd" onclick="addMov()">Agregar ingreso</button></div>
 </div>
 
-<!-- LISTA / CALENDARIO -->
 <div class="list">
   <div class="lh">
     <div class="row" style="gap:8px">
-      <button class="vbtn on" id="vList" onclick="setView('list')">📋 Lista</button>
-      <button class="vbtn" id="vCal" onclick="setView('cal')">📅 Calendario</button>
+      <button class="vbtn on" id="vList" onclick="setView('list')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg> Lista</button>
+      <button class="vbtn" id="vCal" onclick="setView('cal')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg> Calendario</button>
+      <button class="vbtn" id="vMet" onclick="setView('met')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M8 17v-5"/><path d="M13 17V8"/><path d="M18 17v-3"/></svg> Métricas</button>
     </div>
     <span class="sub" id="listCount"></span>
   </div>
   <div id="items"></div>
   <div id="calendar" style="display:none"></div>
   <div class="calleg" id="calleg" style="display:none">
-    <span><i style="background:var(--verde)"></i>Ingreso</span>
-    <span><i style="background:var(--naranja)"></i>Gasto</span>
-    <span><i style="background:var(--violeta)"></i>Deuda</span>
+    <span><i style="background:var(--c-ing)"></i>Ingreso</span>
+    <span><i style="background:var(--c-gas)"></i>Gasto</span>
+    <span><i style="background:var(--c-deb)"></i>Deuda</span>
     <span><i style="background:var(--rojo)"></i>Impago vencido</span>
   </div>
+  <div class="metrics" id="metrics" style="display:none"></div>
 </div>
 
 <footer>
-  <button onclick="backup()">⬇️ Descargar copia</button>
-  <button onclick="document.getElementById('restoreFile').click()">⬆️ Restaurar copia</button>
-  <button onclick="exportCSV()">📄 Exportar CSV</button>
-  <button onclick="openCloud()">☁️ Google Sheets</button>
-  <button onclick="if(confirm('¿Borrar TODOS los datos? Esto no se puede deshacer.'))wipe()">🗑️ Borrar todo</button>
+  <button onclick="backup()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> Descargar copia</button>
+  <button onclick="document.getElementById('restoreFile').click()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 9l5-5 5 5"/><path d="M12 4v12"/></svg> Restaurar copia</button>
+  <button onclick="exportCSV()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg> Exportar CSV</button>
+  <button onclick="openCloud()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/></svg> Google Sheets</button>
+  <button onclick="if(confirm('¿Borrar TODOS los datos? Esto no se puede deshacer.'))wipe()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Borrar todo</button>
   <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restore(event)">
   <span class="sub" id="cloudStatus" style="width:100%;text-align:center"></span>
 </footer>
+
+<!-- MODAL CLOUD -->
+<div class="ov" id="ovCloud">
+  <div class="modal">
+    <h3><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/></svg> Sincronizar con Google Sheets</h3>
+    <div class="g">
+      <div class="sub">Pegá la URL de tu app web de Apps Script (termina en <b>/exec</b>).</div>
+      <div><label>URL de la app web</label><input id="cloudUrl" placeholder="https://script.google.com/macros/s/.../exec"></div>
+      <div class="row" style="gap:8px">
+        <button class="save" style="flex:1;margin:0" onclick="connectCloud()">Conectar / Sincronizar</button>
+        <button class="save" style="background:var(--glass2);color:var(--txt);margin:0" onclick="disconnectCloud()">Desconectar</button>
+      </div>
+      <div class="sub" id="cloudStatus2" style="font-weight:800"></div>
+      <div class="sub" style="font-size:.78rem;line-height:1.4;display:flex;gap:6px;align-items:flex-start"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> La URL es como una contraseña: cualquiera que la tenga puede ver y editar tus datos. No la compartas.</div>
+    </div>
+    <button class="save" style="background:var(--glass2);color:var(--txt);margin-top:12px" onclick="document.getElementById('ovCloud').classList.remove('show')">Cerrar</button>
+  </div>
+</div>
+
+<!-- MODAL VOZ -->
+<div class="ov" id="ovVoice">
+  <div class="modal">
+    <div class="row between" style="margin-bottom:8px">
+      <h3 style="margin:0"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg> Cargar hablando</h3>
+      <span class="sub" id="micState"></span>
+    </div>
+    <textarea id="speechTxt" placeholder='Tocá el micrófono y decí algo como:
+"Pagué treinta y un mil de luz, vence el 15"
+"Cobré una changa de ochenta mil"'></textarea>
+    <div class="row" style="margin-top:10px">
+      <button id="micBtn" class="micbtn" onclick="toggleMic()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg> Hablar</button>
+      <button class="interpbtn" onclick="interpret()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18.5 9l-4.9 1.2L12 15l-1.6-4.8L5.5 9l4.9-1.2z"/><path d="M19 14l.7 2.1L22 17l-2.3.9L19 20l-.7-2.1L16 17z"/></svg> Interpretar</button>
+    </div>
+    <div id="preview"></div>
+    <div id="voiceForm" style="display:none;margin-top:14px">
+      <div class="tabs" id="mtabs">
+        <button data-t="ingreso" onclick="setMTipo('ingreso')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Ingreso</button>
+        <button data-t="gasto" onclick="setMTipo('gasto')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg> Gasto</button>
+        <button data-t="deuda" onclick="setMTipo('deuda')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> Deuda</button>
+      </div>
+      <div class="g">
+        <div class="mrow">
+          <div><label>Monto $</label><input id="mMonto" type="number"></div>
+          <div><label>Categoría</label><select id="mCat"></select></div>
+        </div>
+        <div><label>Descripción</label><input id="mDesc"></div>
+        <div id="mVencWrap"><label>Vencimiento</label><input id="mVenc" type="date"></div>
+        <button class="save" onclick="addVoice()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Agregar</button>
+      </div>
+    </div>
+    <button class="save" style="background:var(--glass2);color:var(--txt);margin-top:10px" onclick="closeVoice()">Cerrar</button>
+  </div>
+</div>
+
+<!-- MODAL DÍA -->
+<div class="ov" id="ovDay">
+  <div class="modal">
+    <h3 id="dayTitle"></h3>
+    <div class="g" id="dayItems"></div>
+    <button class="save" style="background:var(--glass2);color:var(--txt);margin-top:14px" onclick="document.getElementById('ovDay').classList.remove('show')">Cerrar</button>
+  </div>
+</div>
 
 <!-- MODAL EDITAR -->
 <div class="ov" id="ov">
@@ -253,72 +351,10 @@ footer button:hover{color:var(--txt)}
   </div>
 </div>
 
-<!-- MODAL CLOUD -->
-<div class="ov" id="ovCloud">
-  <div class="modal">
-    <h3>☁️ Sincronizar con Google Sheets</h3>
-    <div class="g">
-      <div class="sub">Pegá la URL de tu app web de Apps Script (termina en <b>/exec</b>).</div>
-      <div><label>URL de la app web</label><input id="cloudUrl" placeholder="https://script.google.com/macros/s/.../exec"></div>
-      <div class="row" style="gap:8px">
-        <button class="save" style="flex:1;background:var(--azul);color:#fff;margin:0" onclick="connectCloud()">Conectar / Sincronizar</button>
-        <button class="save" style="background:var(--card2);color:var(--txt);margin:0" onclick="disconnectCloud()">Desconectar</button>
-      </div>
-      <div class="sub" id="cloudStatus2" style="font-weight:800"></div>
-      <div class="sub" style="font-size:.78rem;line-height:1.4">⚠️ La URL es como una contraseña: cualquiera que la tenga puede ver y editar tus datos. No la compartas.</div>
-    </div>
-    <button class="save" style="background:var(--card2);color:var(--txt);margin-top:12px" onclick="document.getElementById('ovCloud').classList.remove('show')">Cerrar</button>
-  </div>
-</div>
-
-<!-- MODAL VOZ -->
-<div class="ov" id="ovVoice">
-  <div class="modal">
-    <div class="row between" style="margin-bottom:8px">
-      <h3 style="margin:0">🎤 Cargar hablando</h3>
-      <span class="sub" id="micState"></span>
-    </div>
-    <textarea id="speechTxt" placeholder='Tocá el micrófono y decí algo como:
-"Pagué treinta y un mil de luz, vence el 15"
-"Cobré una changa de ochenta mil"'></textarea>
-    <div class="row" style="margin-top:10px">
-      <button id="micBtn" class="micbtn" onclick="toggleMic()">🎤 Hablar</button>
-      <button class="interpbtn" onclick="interpret()">✨ Interpretar</button>
-    </div>
-    <div id="preview"></div>
-    <div id="voiceForm" style="display:none;margin-top:14px">
-      <div class="tabs" id="mtabs">
-        <button data-t="ingreso" onclick="setMTipo('ingreso')">➕ Ingreso</button>
-        <button data-t="gasto" onclick="setMTipo('gasto')">➖ Gasto</button>
-        <button data-t="deuda" onclick="setMTipo('deuda')">💳 Deuda</button>
-      </div>
-      <div class="g">
-        <div class="mrow">
-          <div><label>Monto $</label><input id="mMonto" type="number"></div>
-          <div><label>Categoría</label><select id="mCat"></select></div>
-        </div>
-        <div><label>Descripción</label><input id="mDesc"></div>
-        <div id="mVencWrap"><label>Vencimiento</label><input id="mVenc" type="date"></div>
-        <button class="save" style="background:var(--verde);color:#0a2" onclick="addVoice()">Agregar ✔️</button>
-      </div>
-    </div>
-    <button class="save" style="background:var(--card2);color:var(--txt);margin-top:10px" onclick="closeVoice()">Cerrar</button>
-  </div>
-</div>
-
-<!-- MODAL DÍA -->
-<div class="ov" id="ovDay">
-  <div class="modal">
-    <h3 id="dayTitle"></h3>
-    <div class="g" id="dayItems"></div>
-    <button class="save" style="background:var(--card2);color:var(--txt);margin-top:14px" onclick="document.getElementById('ovDay').classList.remove('show')">Cerrar</button>
-  </div>
-</div>
-
 <script>
 /* ============ DATOS ============ */
 const KEY='bois_conta_v2';
-const CATS=['Gasto Fijo','Servicios','Deuda','Comida','Sueldo','Changa','Venta','Ahorro','Extras','Otro'];
+const CATS=['Gasto Fijo','Servicios','Deuda','Comida','Sueldo','Changa','Venta','Ahorro','Extras','Otro','Alquiler','Cuotas','Digital Cash','Entretenimiento','Farmacia','Librería','Médico','Regalo','Ropa','Serigrafía','Supermercado','Trabajo','Transporte'];
 const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const HIST=[{"tipo": "gasto", "monto": 6800, "desc": "aspiradora", "cat": "Otro", "fecha": "2026-02-15", "venc": "", "estado": "impago", "fijo": false},
 {"tipo": "gasto", "monto": 21333, "desc": "la santa swim", "cat": "Otro", "fecha": "2026-02-15", "venc": "", "estado": "impago", "fijo": false},
@@ -398,12 +434,341 @@ const DICC={
   'gasto fijo':['alquiler','ahorro']
 };
 
+const HIST2=[{"tipo": "ingreso", "monto": 920000, "desc": "Sueldo", "cat": "Sueldo", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 50000, "desc": "Seguro Moto 2 meses", "cat": "Servicios", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 90000, "desc": "Alquiler Casa", "cat": "Alquiler", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 30000, "desc": "Préstamo Alquiler Luz", "cat": "Deuda", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "Panchos tampico", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Coockies ;)", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Empanadas Chicas Antidomingo", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 9100, "desc": "Regalo Luz", "cat": "Regalo", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 14000, "desc": "Café SuperCabrales", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Frutigran", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Vermouth", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10500, "desc": "Empanadas 7", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3700, "desc": "Galles", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Pebete", "cat": "Comida", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 24000, "desc": "Soga y Lu", "cat": "Entretenimiento", "fecha": "2025-02-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3700, "desc": "Test", "cat": "Médico", "fecha": "2025-02-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "jyq pan galles", "cat": "Comida", "fecha": "2025-02-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2800, "desc": "Aceite cocinero", "cat": "Comida", "fecha": "2025-02-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "50 y 50 j y q y pan", "cat": "Comida", "fecha": "2025-02-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "Seña ramo de flores", "cat": "Regalo", "fecha": "2025-02-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10600, "desc": "6 empanadas", "cat": "Comida", "fecha": "2025-02-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "3 empanadas, que miseria", "cat": "Comida", "fecha": "2025-02-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Verduras", "cat": "Comida", "fecha": "2025-02-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6700, "desc": "Carne 600gr", "cat": "Comida", "fecha": "2025-02-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 15000, "desc": "Lenceria Luz", "cat": "Ropa", "fecha": "2025-02-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "Peluche Luz", "cat": "Entretenimiento", "fecha": "2025-02-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1800, "desc": "Crema Decolorante", "cat": "Farmacia", "fecha": "2025-02-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1900, "desc": "Frutigran", "cat": "Comida", "fecha": "2025-02-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3500, "desc": "Uber ida", "cat": "Transporte", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3500, "desc": "Uber vuelta", "cat": "Transporte", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Coquita", "cat": "Comida", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10500, "desc": "mila soja y puré", "cat": "Comida", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Ensayo", "cat": "Entretenimiento", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Impresiones CV", "cat": "Librería", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 32000, "desc": "Cochera", "cat": "Transporte", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 18600, "desc": "Servicios", "cat": "Servicios", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 25000, "desc": "Pasaje BS AS", "cat": "Cuotas", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "Ramo de Flores", "cat": "Regalo", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 40000, "desc": "Nacho", "cat": "Trabajo", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Pan", "cat": "Comida", "fecha": "2025-02-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Salchichas", "cat": "Comida", "fecha": "2025-02-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Tacitas", "cat": "Otro", "fecha": "2025-02-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "Cafetería", "cat": "Comida", "fecha": "2025-02-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 13000, "desc": "Cumple Luz", "cat": "Comida", "fecha": "2025-02-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2800, "desc": "Galles y JyQ", "cat": "Comida", "fecha": "2025-02-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2550, "desc": "Verduras", "cat": "Comida", "fecha": "2025-02-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5450, "desc": "Tapas de empanadas, queso y galles", "cat": "Comida", "fecha": "2025-02-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1300, "desc": "Jamón", "cat": "Comida", "fecha": "2025-02-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 400, "desc": "Tomates", "cat": "Comida", "fecha": "2025-02-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7600, "desc": "Alernix", "cat": "Farmacia", "fecha": "2025-02-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 11700, "desc": "Galles, café", "cat": "Comida", "fecha": "2025-02-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "Empanadas 6", "cat": "Comida", "fecha": "2025-02-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3300, "desc": "Didi vuelta", "cat": "Transporte", "fecha": "2025-02-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1700, "desc": "Galles", "cat": "Comida", "fecha": "2025-02-23", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3750, "desc": "Cebolla, gelatina, galles y crema", "cat": "Comida", "fecha": "2025-02-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Ensayo", "cat": "Entretenimiento", "fecha": "2025-02-24", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1100, "desc": "Chocolinas", "cat": "Comida", "fecha": "2025-02-24", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "cerveza", "cat": "Comida", "fecha": "2025-02-24", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "5000 curso papá", "cat": "Deuda", "fecha": "2025-02-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3700, "desc": "jyq pan galles", "cat": "Comida", "fecha": "2025-02-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 900, "desc": "Tomates cherry", "cat": "Comida", "fecha": "2025-02-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Rúcula, queso y Jabón", "cat": "Comida", "fecha": "2025-02-24", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 9000, "desc": "Cámara de bicicleta", "cat": "Transporte", "fecha": "2025-02-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2400, "desc": "Jamón queso y pan", "cat": "Comida", "fecha": "2025-02-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 300, "desc": "Verdeo", "cat": "Comida", "fecha": "2025-02-27", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2400, "desc": "2 Empanadas", "cat": "Comida", "fecha": "2025-02-27", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 900, "desc": "Fotocopias", "cat": "Librería", "fecha": "2025-02-27", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3100, "desc": "Papas Y galletitas", "cat": "Comida", "fecha": "2025-02-27", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7000, "desc": "Pan panchos, vino y papas pay y chocolates", "cat": "Comida", "fecha": "2025-02-28", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 9800, "desc": "Ñoquis, pasta de dientes, fósforos y Acondicionador", "cat": "Supermercado", "fecha": "2025-02-28", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Helado", "cat": "Comida", "fecha": "2025-03-01", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 21000, "desc": "Cafe y galles", "cat": "Comida", "fecha": "2025-03-01", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2200, "desc": "Alfajores", "cat": "Comida", "fecha": "2025-03-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5800, "desc": "Pilas y gallee", "cat": "Supermercado", "fecha": "2025-03-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1700, "desc": "Verduras", "cat": "Comida", "fecha": "2025-03-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7000, "desc": "Galles leche y tapa tarta.", "cat": "Comida", "fecha": "2025-03-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 16000, "desc": "Comida", "cat": "Comida", "fecha": "2025-03-03", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3220, "desc": "Uber al Tri", "cat": "Transporte", "fecha": "2025-03-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4250, "desc": "J y q pan y galles", "cat": "Comida", "fecha": "2025-03-04", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1350, "desc": "Comida", "cat": "Comida", "fecha": "2025-03-04", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2100, "desc": "J y q y pan", "cat": "Comida", "fecha": "2025-03-04", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2100, "desc": "j y q y pan", "cat": "Comida", "fecha": "2025-03-06", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2340, "desc": "Uber Entrevista", "cat": "Transporte", "fecha": "2025-03-06", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1350, "desc": "galles", "cat": "Comida", "fecha": "2025-03-06", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2800, "desc": "Papá papá pasita y Chocolate", "cat": "Comida", "fecha": "2025-03-06", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1900, "desc": "Comida", "cat": "Comida", "fecha": "2025-03-06", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 20000, "desc": "tomates, gancia y sprite", "cat": "Supermercado", "fecha": "2025-03-07", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7300, "desc": "ñoquis, y crema", "cat": "Comida", "fecha": "2025-03-07", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2400, "desc": "Chicle", "cat": "Comida", "fecha": "2025-03-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6500, "desc": "Cafe y Galle", "cat": "Comida", "fecha": "2025-03-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7900, "desc": "Funda Celu", "cat": "Otro", "fecha": "2025-03-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7600, "desc": "galles", "cat": "Comida", "fecha": "2025-03-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "birra", "cat": "Comida", "fecha": "2025-03-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1600, "desc": "Costa Azul", "cat": "Transporte", "fecha": "2025-03-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "Entrada Biblioteca Juventud", "cat": "Entretenimiento", "fecha": "2025-03-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 20600, "desc": "Viejo dave", "cat": "Comida", "fecha": "2025-03-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 960000, "desc": "Movimiento", "cat": "Otro", "fecha": "2025-01-31", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 368450, "desc": "Movimiento", "cat": "Otro", "fecha": "2025-02-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 870000, "desc": "Sueldo", "cat": "Sueldo", "fecha": "2025-03-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2200, "desc": "Galles", "cat": "Comida", "fecha": "2025-03-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 80000, "desc": "Alquiler", "cat": "Alquiler", "fecha": "2025-03-10", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 60000, "desc": "Servicios", "cat": "Servicios", "fecha": "2025-03-10", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 15900, "desc": "Cafe Super Cabrales 500g", "cat": "Comida", "fecha": "2025-03-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Sala de ensayo", "cat": "Entretenimiento", "fecha": "2025-03-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6700, "desc": "Cafe con mamá", "cat": "Comida", "fecha": "2025-03-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 16000, "desc": "Ravioles Matis Carlis", "cat": "Comida", "fecha": "2025-03-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3100, "desc": "Galles", "cat": "Comida", "fecha": "2025-03-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "DNRPA uber", "cat": "Transporte", "fecha": "2025-03-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 11500, "desc": "DNRPA", "cat": "Otro", "fecha": "2025-03-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Sacramento jyq", "cat": "Comida", "fecha": "2025-03-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 24000, "desc": "1 k y 1/2 de helado en Ibiza", "cat": "Comida", "fecha": "2025-03-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "galles", "cat": "Supermercado", "fecha": "2025-03-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5500, "desc": "Tampico", "cat": "Comida", "fecha": "2025-03-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6700, "desc": "Golosinss", "cat": "Comida", "fecha": "2025-03-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "Entrada CC America Libre", "cat": "Entretenimiento", "fecha": "2025-03-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 20000, "desc": "Comida Club Tri", "cat": "Comida", "fecha": "2025-03-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 15000, "desc": "3 pares de medias", "cat": "Ropa", "fecha": "2025-03-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1550, "desc": "j y q y pan", "cat": "Comida", "fecha": "2025-03-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Sala de Ensayo", "cat": "Entretenimiento", "fecha": "2025-03-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3200, "desc": "Papel carbonico", "cat": "Librería", "fecha": "2025-03-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "Hamburguesas, Pan y tomate", "cat": "Comida", "fecha": "2025-03-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "j y q, pan y galles", "cat": "Comida", "fecha": "2025-03-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 36000, "desc": "Vidrio 120cm d", "cat": "Otro", "fecha": "2025-03-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 15000, "desc": "Escribania", "cat": "Otro", "fecha": "2025-03-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1400, "desc": "Uber Moto", "cat": "Transporte", "fecha": "2025-03-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Comida al Peso", "cat": "Comida", "fecha": "2025-03-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "galles", "cat": "Comida", "fecha": "2025-03-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 10000, "desc": "Movimiento", "cat": "Otro", "fecha": "2025-03-20", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2100, "desc": "50 y 50 de Jyq pan", "cat": "Comida", "fecha": "2025-03-20", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 56000, "desc": "Cuota de Colchón", "cat": "Cuotas", "fecha": "2025-03-20", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Gaoxiada 50 volúmenes", "cat": "Farmacia", "fecha": "2025-03-20", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10750, "desc": "Alarmix spray Y tafirol 1 G", "cat": "Farmacia", "fecha": "2025-03-20", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 20600, "desc": "Cina nahuatónica Mina estas galletitas puré instantánea", "cat": "Comida", "fecha": "2025-03-20", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4600, "desc": "Empanadas y Galles", "cat": "Comida", "fecha": "2025-03-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "Entrada Luz", "cat": "Entretenimiento", "fecha": "2025-03-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3500, "desc": "Birra", "cat": "Comida", "fecha": "2025-03-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3500, "desc": "Uber", "cat": "Transporte", "fecha": "2025-03-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7400, "desc": "Milanesa.s", "cat": "Comida", "fecha": "2025-03-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Lechuga y tomate", "cat": "Comida", "fecha": "2025-03-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "Galles", "cat": "Comida", "fecha": "2025-03-24", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4900, "desc": "Galles y Leche", "cat": "Comida", "fecha": "2025-03-24", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Médico Clínico", "cat": "Médico", "fecha": "2025-03-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1200, "desc": "Pan", "cat": "Comida", "fecha": "2025-03-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 300, "desc": "Fotocopia", "cat": "Librería", "fecha": "2025-03-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Almohaditas", "cat": "Comida", "fecha": "2025-03-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 13000, "desc": "Burguer King", "cat": "Comida", "fecha": "2025-03-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2400, "desc": "J y Q y Pan", "cat": "Comida", "fecha": "2025-03-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "Jabón, papel higiénico", "cat": "Supermercado", "fecha": "2025-03-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2700, "desc": "J y q y Galles Salvado", "cat": "Comida", "fecha": "2025-03-27", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3400, "desc": "Galles, Mediatarde y Paté", "cat": "Comida", "fecha": "2025-03-27", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 600, "desc": "Pan", "cat": "Comida", "fecha": "2025-03-27", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "2 Enpanadas", "cat": "Comida", "fecha": "2025-03-28", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 700, "desc": "1 Banana", "cat": "Comida", "fecha": "2025-03-28", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Pan y Galletas Marineras", "cat": "Comida", "fecha": "2025-03-28", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1500, "desc": "fotocopias y  treat", "cat": "Comida", "fecha": "2025-03-29", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 18200, "desc": "Café Super Cabrales", "cat": "Comida", "fecha": "2025-03-29", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4200, "desc": "Galles y Leche", "cat": "Comida", "fecha": "2025-03-30", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "2 Latte y Medialunas", "cat": "Comida", "fecha": "2025-03-30", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 29600, "desc": "Lukast Compuesto", "cat": "Farmacia", "fecha": "2025-03-30", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1800, "desc": "Crema", "cat": "Comida", "fecha": "2025-03-30", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4500, "desc": "Cine", "cat": "Entretenimiento", "fecha": "2025-03-31", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4400, "desc": "Gaseosa y Sugus", "cat": "Comida", "fecha": "2025-03-31", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1900, "desc": "Pan y J y Q", "cat": "Comida", "fecha": "2025-03-31", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Sala de ensayo", "cat": "Entretenimiento", "fecha": "2025-04-01", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1800, "desc": "Pan y J y Q", "cat": "Comida", "fecha": "2025-04-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 600, "desc": "Pan negrito", "cat": "Comida", "fecha": "2025-04-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6100, "desc": "Café y Budín Kiva Café", "cat": "Comida", "fecha": "2025-04-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5100, "desc": "Galles, salchi y pan", "cat": "Comida", "fecha": "2025-04-02", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1300, "desc": "J y Q", "cat": "Comida", "fecha": "2025-04-03", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 11200, "desc": "Vino, cubertera, pan, salchis, ketchup", "cat": "Comida", "fecha": "2025-04-04", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2100, "desc": "Chicle", "cat": "Comida", "fecha": "2025-04-05", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6100, "desc": "Galles", "cat": "Comida", "fecha": "2025-04-05", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 15500, "desc": "Café Weiss", "cat": "Comida", "fecha": "2025-04-05", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "ATC", "cat": "Comida", "fecha": "2025-04-06", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Galles piolas", "cat": "Comida", "fecha": "2025-04-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3500, "desc": "Galles y J y Q", "cat": "Comida", "fecha": "2025-04-07", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1200, "desc": "colectivo", "cat": "Transporte", "fecha": "2025-04-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Milanesas", "cat": "Comida", "fecha": "2025-04-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2100, "desc": "j y q", "cat": "Comida", "fecha": "2025-04-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "Bife angosto", "cat": "Comida", "fecha": "2025-04-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4800, "desc": "Mayonesa y vinagre", "cat": "Comida", "fecha": "2025-04-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1300, "desc": "JyQ", "cat": "Comida", "fecha": "2025-04-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1400, "desc": "Pan", "cat": "Comida", "fecha": "2025-04-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 800, "desc": "Galles", "cat": "Comida", "fecha": "2025-04-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3300, "desc": "Sala de ensayo", "cat": "Entretenimiento", "fecha": "2025-04-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 200000, "desc": "Sueldo", "cat": "Sueldo", "fecha": "2025-04-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 50000, "desc": "Tengo que sacar la cuenta exacta", "cat": "Sueldo", "fecha": "2025-04-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 110000, "desc": "Alquiler", "cat": "Alquiler", "fecha": "2025-04-14", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 5000, "desc": "Flat White e Irlandés", "cat": "Comida", "fecha": "2025-04-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 11400, "desc": "Vitamina C y Pañuelos", "cat": "Farmacia", "fecha": "2025-04-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 16000, "desc": "Bowling y birra", "cat": "Entretenimiento", "fecha": "2025-04-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "Confetti y Comida compra de Luz", "cat": "Supermercado", "fecha": "2025-04-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "J y Q y pan.", "cat": "Comida", "fecha": "2025-04-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Pan", "cat": "Comida", "fecha": "2025-04-16", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 60000, "desc": "Supermercado", "cat": "Supermercado", "fecha": "2025-04-16", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2700, "desc": "queso", "cat": "Comida", "fecha": "2025-04-16", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Birra", "cat": "Comida", "fecha": "2025-04-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Uber", "cat": "Transporte", "fecha": "2025-04-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 200000, "desc": "10 Buzos Jere Adelanto", "cat": "Serigrafía", "fecha": "2025-04-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 285000, "desc": "10 Buzos Negros Jere", "cat": "Serigrafía", "fecha": "2025-04-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4700, "desc": "Uber Luz Lugui", "cat": "Serigrafía", "fecha": "2025-04-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 12800, "desc": "Hamburguesas pan para hamburguesa vino y cheddar", "cat": "Comida", "fecha": "2025-04-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1600, "desc": "Costa Azul", "cat": "Transporte", "fecha": "2025-04-20", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2600, "desc": "j y q y pan", "cat": "Comida", "fecha": "2025-04-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "Moto Escuela", "cat": "Entretenimiento", "fecha": "2025-04-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2800, "desc": "Filminas", "cat": "Serigrafía", "fecha": "2025-04-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7000, "desc": "Salchis, Pan y papas pay", "cat": "Supermercado", "fecha": "2025-04-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6500, "desc": "Mediación", "cat": "Médico", "fecha": "2025-04-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Bono Guardia", "cat": "Médico", "fecha": "2025-04-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Bono RX", "cat": "Médico", "fecha": "2025-04-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Robo de la Pueyredon", "cat": "Médico", "fecha": "2025-04-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5800, "desc": "Pan dulce, zanahoria y ramen", "cat": "Supermercado", "fecha": "2025-04-23", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1300, "desc": "JyQ y Pan", "cat": "Comida", "fecha": "2025-04-24", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7000, "desc": "Panchos Tampico", "cat": "Comida", "fecha": "2025-04-24", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6500, "desc": "Separador Pie", "cat": "Farmacia", "fecha": "2025-04-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 9400, "desc": "Nafta", "cat": "Transporte", "fecha": "2025-04-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 222, "desc": "Movimiento", "cat": "Otro", "fecha": "2025-05-06", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 950000, "desc": "Sueldo", "cat": "Sueldo", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 12000, "desc": "Panchos Tampico", "cat": "Comida", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4500, "desc": "Galles Y jyq y Pan", "cat": "Comida", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 18000, "desc": "2 remeras Blancas", "cat": "Serigrafía", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "2 cintas", "cat": "Serigrafía", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 16400, "desc": "Crema fideos papel higiénico Servilletas salmarina", "cat": "Supermercado", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 105000, "desc": "Alquiler", "cat": "Alquiler", "fecha": "2025-05-09", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 35000, "desc": "Mp", "cat": "Otro", "fecha": "2025-05-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Galles", "cat": "Comida", "fecha": "2025-05-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3300, "desc": "3 Empanadas que miseria", "cat": "Comida", "fecha": "2025-05-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 14500, "desc": "Chino", "cat": "Comida", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5800, "desc": "Comida", "cat": "Comida", "fecha": "2025-05-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1600, "desc": "Costa Azul", "cat": "Transporte", "fecha": "2025-05-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6500, "desc": "chino", "cat": "Supermercado", "fecha": "2025-05-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1600, "desc": "Uber", "cat": "Transporte", "fecha": "2025-05-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 12000, "desc": "Chino", "cat": "Supermercado", "fecha": "2025-05-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 20000, "desc": "Extra", "cat": "Sueldo", "fecha": "2025-05-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 22000, "desc": "aceite, lunricante cadenas y filtro", "cat": "Transporte", "fecha": "2025-05-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 20100, "desc": "jabon liquido, vinagre y desmanchador", "cat": "Supermercado", "fecha": "2025-05-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3600, "desc": "Silicona Liquida", "cat": "Supermercado", "fecha": "2025-05-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 13750, "desc": "Galles salvado, criollotas, queso untable, ñoquis y crema", "cat": "Supermercado", "fecha": "2025-05-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1900, "desc": "pan y j y q", "cat": "Comida", "fecha": "2025-05-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 40000, "desc": "Cambio Bateria Abuelo", "cat": "Servicios", "fecha": "2025-05-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 38000, "desc": "Cochera", "cat": "Transporte", "fecha": "2025-05-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "pan y j y q", "cat": "Comida", "fecha": "2025-05-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 9800, "desc": "Nafta", "cat": "Transporte", "fecha": "2025-05-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7500, "desc": "coca cola, chocolate, galles", "cat": "Supermercado", "fecha": "2025-05-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1700, "desc": "muzzarellq", "cat": "Comida", "fecha": "2025-05-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 200000, "desc": "Sueldo", "cat": "Sueldo", "fecha": "2025-07-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 100000, "desc": "Trabajo VHS Eleven Club", "cat": "Digital Cash", "fecha": "2025-07-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 57000, "desc": "galles, carne, verduras, café", "cat": "Comida", "fecha": "2025-07-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 750000, "desc": "Sueldo", "cat": "Sueldo", "fecha": "2025-07-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 43000, "desc": "Cochera Mes", "cat": "Alquiler", "fecha": "2025-07-10", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 3000, "desc": "J y Q y Pan", "cat": "Comida", "fecha": "2025-07-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 146900, "desc": "Alquiler más sellado de Contrato", "cat": "Alquiler", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 37000, "desc": "Deposito Cardiologo", "cat": "Médico", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "Diferenciado medico", "cat": "Médico", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3200, "desc": "Uber Eleven Club", "cat": "Transporte", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Uber Eleven Club", "cat": "Transporte", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 72000, "desc": "Préstamo alquiler Luz", "cat": "Deuda", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 37000, "desc": "Deposito Cardiologo", "cat": "Médico", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "SUBE", "cat": "Transporte", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Uber Eleven Club", "cat": "Transporte", "fecha": "2025-07-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1300, "desc": "Colectivo", "cat": "Transporte", "fecha": "2025-07-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4500, "desc": "Uber Viki", "cat": "Transporte", "fecha": "2025-07-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "Productos de Limpieza Truli Compró", "cat": "Supermercado", "fecha": "2025-07-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Galles", "cat": "Comida", "fecha": "2025-07-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "Dos caja Paty y Pan Hamburguesa", "cat": "Comida", "fecha": "2025-07-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6500, "desc": "Comida Disco y Chino", "cat": "Supermercado", "fecha": "2025-07-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Uber a Amarena", "cat": "Transporte", "fecha": "2025-07-13", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5500, "desc": "Maca Peruana", "cat": "Comida", "fecha": "2025-07-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2200, "desc": "J y Q y Pan", "cat": "Comida", "fecha": "2025-07-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 20000, "desc": "Abu Edith", "cat": "Regalo", "fecha": "2025-07-14", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "PuleMetales y Trapito", "cat": "Supermercado", "fecha": "2025-07-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2500, "desc": "Uber Que Bonita Galeria", "cat": "Transporte", "fecha": "2025-07-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3300, "desc": "Uber Que Bonita Galeria", "cat": "Transporte", "fecha": "2025-07-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 56000, "desc": "Curso Costura X2", "cat": "Entretenimiento", "fecha": "2025-07-16", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "J y Q y Pan", "cat": "Comida", "fecha": "2025-07-16", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 20000, "desc": "Servicios", "cat": "Servicios", "fecha": "2025-07-16", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 18000, "desc": "Liencillo", "cat": "Entretenimiento", "fecha": "2025-07-16", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1400, "desc": "100 gr Jamón", "cat": "Comida", "fecha": "2025-07-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "J y Q", "cat": "Comida", "fecha": "2025-07-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Uber Bitelyus", "cat": "Transporte", "fecha": "2025-07-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "2 Porciones de Pizza", "cat": "Comida", "fecha": "2025-07-18", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 11500, "desc": "Alernix y Tafirol", "cat": "Farmacia", "fecha": "2025-07-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7200, "desc": "Galles", "cat": "Comida", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Pañuelos y Kinder", "cat": "Comida", "fecha": "2025-07-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 16500, "desc": "Milanesas, Queso y Papel Higiénico", "cat": "Supermercado", "fecha": "2025-07-19", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "Cynar Tri", "cat": "Entretenimiento", "fecha": "2025-07-20", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2400, "desc": "J y Q y Pan", "cat": "Comida", "fecha": "2025-07-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 13000, "desc": "Recetas y Estudios Médicos", "cat": "Médico", "fecha": "2025-07-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2400, "desc": "Bombones y Chicle Zanetti", "cat": "Supermercado", "fecha": "2025-07-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10600, "desc": "SuperCabrales 250gr", "cat": "Comida", "fecha": "2025-07-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 8600, "desc": "1K Milanesa de Pollo", "cat": "Comida", "fecha": "2025-07-21", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 1400, "desc": "J y Q", "cat": "Comida", "fecha": "2025-07-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 600, "desc": "Pan", "cat": "Comida", "fecha": "2025-07-22", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2300, "desc": "J y Q y Pan", "cat": "Comida", "fecha": "2025-07-23", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 10000, "desc": "Plata Para Tarjeta de Credito de Luz", "cat": "Deuda", "fecha": "2025-07-23", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 10000, "desc": "Remera Minolta T3 Tamara Holtzman", "cat": "Serigrafía", "fecha": "2025-07-23", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 100000, "desc": "Trabajo VHS Eleven Club", "cat": "Digital Cash", "fecha": "2025-07-23", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 40000, "desc": "Devolví Plata a Papá", "cat": "Digital Cash", "fecha": "2025-07-23", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 13500, "desc": "Seguro de Moto", "cat": "Digital Cash", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 20300, "desc": "Guantes Moto x2", "cat": "Transporte", "fecha": "2025-05-08", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3500, "desc": "Galles Salvado", "cat": "Digital Cash", "fecha": "2025-07-25", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Pizza Luz", "cat": "Comida", "fecha": "2025-07-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2700, "desc": "Uber a Casa Taller", "cat": "Transporte", "fecha": "2025-07-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Uber a Casa", "cat": "Transporte", "fecha": "2025-07-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "Papel Higiénico, galles y Lavandina.", "cat": "Supermercado", "fecha": "2025-07-26", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 28500, "desc": "Emulquit", "cat": "Serigrafía", "fecha": "2025-07-29", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5200, "desc": "Puerro, Verdeo y Crema", "cat": "Supermercado", "fecha": "2025-07-29", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "3 Pizzas", "cat": "Digital Cash", "fecha": "2025-07-29", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 950000, "desc": "Sueldo", "cat": "Sueldo", "fecha": "2025-08-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 47000, "desc": "Cochera", "cat": "Alquiler", "fecha": "2025-08-09", "venc": "", "estado": "pago", "fijo": true},
+{"tipo": "gasto", "monto": 9600, "desc": "Milanesas", "cat": "Supermercado", "fecha": "2025-08-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 11000, "desc": "Frappés y Budín", "cat": "Comida", "fecha": "2025-08-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Taxi", "cat": "Transporte", "fecha": "2025-08-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 28000, "desc": "Milanesas, café, verduras", "cat": "Comida", "fecha": "2025-08-09", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 7300, "desc": "Galles y Leche", "cat": "Supermercado", "fecha": "2025-08-10", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "Galles", "cat": "Comida", "fecha": "2025-08-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 18000, "desc": "Pizza y Empanada", "cat": "Comida", "fecha": "2025-08-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 5000, "desc": "Corta Hilacha, Hilo y Pasadores", "cat": "Librería", "fecha": "2025-08-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 2000, "desc": "Taxi mamá de Mc a Casa", "cat": "Transporte", "fecha": "2025-08-11", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 56000, "desc": "Curso Costura X2", "cat": "Entretenimiento", "fecha": "2025-08-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 8000, "desc": "Acondicionador y Pepsi", "cat": "Supermercado", "fecha": "2025-08-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 42500, "desc": "Gabardina y Regalo Solchu", "cat": "Entretenimiento", "fecha": "2025-08-12", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3100, "desc": "100 y 100 de j y q y Pan", "cat": "Comida", "fecha": "2025-08-15", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 3000, "desc": "Tafirol 1g", "cat": "Farmacia", "fecha": "2025-08-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "ingreso", "monto": 16800, "desc": "Café Feria Modem", "cat": "Trabajo", "fecha": "2025-08-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 4000, "desc": "Taxi desde Edu a Casa", "cat": "Transporte", "fecha": "2025-08-17", "venc": "", "estado": "pago", "fijo": false},
+{"tipo": "gasto", "monto": 6000, "desc": "Movimiento", "cat": "Otro", "fecha": "2025-08-28", "venc": "", "estado": "pago", "fijo": false}];
 let state=load();
-migrate();
-cleanV3();
 let tipo='ingreso';
 let editId=null;
 let view='list';
+let cloudUrl='';
+let pushTimer=null;
+const IC={mic:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg>',stop:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',bell:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>',check:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',pencil:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',trash:'<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',repeat:'<svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>'};
+
 
 function load(){
   const raw=localStorage.getItem(KEY);
@@ -413,8 +778,6 @@ function load(){
 function save(){localStorage.setItem(KEY,JSON.stringify(state));schedulePush();}
 
 /* ====== Sincronización Google Sheets ====== */
-let cloudUrl='';
-let pushTimer=null;
 function setCloud(msg){['cloudStatus','cloudStatus2'].forEach(idd=>{const e=document.getElementById(idd);if(e)e.textContent=msg;});}
 function openCloud(){const i=$('#cloudUrl');if(i)i.value=cloudUrl;$('#ovCloud').classList.add('show');}
 function disconnectCloud(){cloudUrl='';localStorage.removeItem('bois_cloud_url');setCloud('Desconectado');}
@@ -423,7 +786,7 @@ function cloudPayload(){return JSON.stringify({movs:state.movs,fijos:state.fijos
 function cloudPush(){
   if(!cloudUrl)return;
   fetch(cloudUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:cloudPayload()})
-    .then(r=>r.json()).then(d=>setCloud(d&&d.ok?'Sincronizado ✓':'Error al guardar')).catch(()=>setCloud('Sin conexión'));
+    .then(r=>r.json()).then(d=>setCloud(d&&d.ok?'Sincronizado':'Error al guardar')).catch(()=>setCloud('Sin conexión'));
 }
 function cloudPull(cb){
   if(!cloudUrl){if(cb)cb(false);return;}
@@ -433,7 +796,7 @@ function cloudPull(cb){
       state.movs=d.movs;if(Array.isArray(d.fijos))state.fijos=d.fijos;
       if(d.goalMin)state.goalMin=d.goalMin;if(d.goalMax)state.goalMax=d.goalMax;
       localStorage.setItem(KEY,JSON.stringify(state));
-      setCloud('Sincronizado ✓');if(cb)cb(true);
+      setCloud('Sincronizado');if(cb)cb(true);
     }else{setCloud('Respuesta inesperada');if(cb)cb(false);}
   }).catch(()=>{setCloud('Sin conexión');if(cb)cb(false);});
 }
@@ -444,10 +807,10 @@ function connectCloud(){
   setCloud('Conectando…');
   fetch(url).then(r=>r.json()).then(d=>{
     if(!d||!Array.isArray(d.movs))throw 0;
-    if(d.movs.length===0){cloudPush();setCloud('Conectado. Subiendo tus datos ✓');}
+    if(d.movs.length===0){cloudPush();setCloud('Conectado. Subiendo tus datos');}
     else if(confirm('La planilla ya tiene '+d.movs.length+' movimientos.\n\nAceptar = usar los de la planilla.\nCancelar = subir los de este dispositivo.')){
       state.movs=d.movs;if(Array.isArray(d.fijos))state.fijos=d.fijos;if(d.goalMin)state.goalMin=d.goalMin;if(d.goalMax)state.goalMax=d.goalMax;
-      localStorage.setItem(KEY,JSON.stringify(state));setCloud('Sincronizado ✓');
+      localStorage.setItem(KEY,JSON.stringify(state));setCloud('Sincronizado');
     } else { cloudPush(); }
     buildMonths();render();
     $('#ovCloud').classList.remove('show');
@@ -460,15 +823,14 @@ function seed(){
     {desc:'Camuzzi',cat:'Servicios',monto:13080,dia:8},
     {desc:'Edea',cat:'Servicios',monto:31794,dia:2},
     {desc:'Nave Internet',cat:'Servicios',monto:15407,dia:1},
-    {desc:'Claro',cat:'Servicios',monto:9621,dia:5},
-    {desc:'Seguro de moto',cat:'Servicios',monto:14500,dia:11}
+    {desc:'Claro',cat:'Servicios',monto:9621,dia:5}
   ];
   const movs=[
     {id:id(),tipo:'ingreso',monto:280000,desc:'Mercado Libre Venta Lente',cat:'Venta',fecha:'2026-06-01',venc:'',estado:'pago',fijo:false},
     {id:id(),tipo:'ingreso',monto:500000,desc:'Sueldo Biomarketing',cat:'Sueldo',fecha:'2026-06-01',venc:'',estado:'pago',fijo:false},
     {id:id(),tipo:'ingreso',monto:80000,desc:'Changa',cat:'Changa',fecha:'2026-06-11',venc:'',estado:'pago',fijo:false}
   ];
-  return {movs:histMovs().concat(movs),fijos,goalMin:1200000,goalMax:1600000,seededHist:1,cleanV3:1};
+  return {movs:histMovs().concat(histMovs2()).concat(movs),fijos,goalMin:1200000,goalMax:1600000,seededHist:1,cleanV3:1,noSeguro:1,hist2:1};
 }
 function histMovs(){return HIST.map(h=>Object.assign({},h,{id:id()}));}
 function migrate(){
@@ -491,6 +853,20 @@ function cleanV3(){
     if(seen.has(k))return false; seen.add(k); return true;
   });
   state.cleanV3=1; save();
+}
+function noSeguro(){
+  if(state.noSeguro)return;
+  state.fijos=(state.fijos||[]).filter(f=>!/seguro/i.test(f.desc));
+  state.movs=state.movs.filter(m=>!(/seguro/i.test(m.desc)&&monthKey(m.venc||m.fecha)>='2026-06'));
+  state.noSeguro=1; save();
+}
+function histMovs2(){return HIST2.map(h=>Object.assign({},h,{id:id()}));}
+function hist2(){
+  if(state.hist2)return;
+  const k=m=>m.tipo+'|'+(m.venc||m.fecha).slice(0,7)+'|'+m.desc.toLowerCase()+'|'+m.monto;
+  const have=new Set(state.movs.map(k));
+  histMovs2().forEach(h=>{if(!have.has(k(h)))state.movs.push(h);});
+  state.hist2=1; save();
 }
 function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 
@@ -523,8 +899,9 @@ function labelMonth(ym){const p=ym.split('-');return MESES[+p[1]-1]+' '+p[0]}
 /* ============ UI BÁSICA ============ */
 function fillCats(sel){$(sel).innerHTML=CATS.map(c=>'<option>'+c+'</option>').join('')}
 let theme=localStorage.getItem('bois_theme')||'light';
-function applyTheme(){document.body.classList.toggle('light',theme==='light');const b=document.getElementById('themeBtn');if(b)b.textContent=theme==='light'?'🌙':'☀️';}
-function toggleTheme(){theme=theme==='light'?'dark':'light';localStorage.setItem('bois_theme',theme);applyTheme();}
+const ICsun='<svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.9 4.9l1.4 1.4"/><path d="M17.7 17.7l1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.9 19.1l1.4-1.4"/><path d="M17.7 6.3l1.4-1.4"/></svg>';const ICmoon='<svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+function applyTheme(){document.body.classList.toggle('dark',theme==='dark');const b=document.getElementById('themeBtn');if(b)b.innerHTML=theme==='dark'?ICsun:ICmoon;}
+function toggleTheme(){theme=theme==='dark'?'light':'dark';localStorage.setItem('bois_theme',theme);applyTheme();}
 function shiftMonth(delta){
   const cur=$('#monthSel').value||todayYM();
   let p=cur.split('-').map(Number),y=p[0],m=p[1]+delta;
@@ -565,9 +942,11 @@ function setView(v){
   view=v;
   $('#vList').classList.toggle('on',v==='list');
   $('#vCal').classList.toggle('on',v==='cal');
+  $('#vMet').classList.toggle('on',v==='met');
   $('#items').style.display=v==='list'?'block':'none';
   $('#calendar').style.display=v==='cal'?'block':'none';
   $('#calleg').style.display=v==='cal'?'flex':'none';
+  $('#metrics').style.display=v==='met'?'block':'none';
   render();
 }
 
@@ -757,7 +1136,7 @@ function interpret(){
   $('#voiceForm').style.display='block';
   const tlabel={ingreso:'Ingreso',gasto:'Gasto',deuda:'Deuda'}[r.tipo];
   const vtxt=(r.tipo!=='ingreso'&&r.venc)?(' · vence '+r.venc.split('-').reverse().slice(0,2).join('/')):'';
-  $('#preview').innerHTML='<div class="pv ok">Entendí: <b>'+tlabel+'</b> · <b>'+money(r.monto)+'</b> · '+r.desc+' <span class="cat-tag">'+r.cat+'</span>'+vtxt+'<br><span class="sub">Revisá y tocá <b>Agregar</b> ✔️</span></div>';
+  $('#preview').innerHTML='<div class="pv ok">Entendí: <b>'+tlabel+'</b> · <b>'+money(r.monto)+'</b> · '+r.desc+' <span class="cat-tag">'+r.cat+'</span>'+vtxt+'<br><span class="sub">Revisá y tocá <b>Agregar</b></span></div>';
 }
 function addVoice(){
   const monto=parseFloat($('#mMonto').value);
@@ -787,7 +1166,7 @@ function initRec(){
 function updateMic(){
   const b=$('#micBtn');
   b.classList.toggle('live',listening);
-  b.textContent=listening?'⏹ Detener':'🎤 Hablar';
+  b.innerHTML=(listening?IC.stop:IC.mic)+(listening?' Detener':' Hablar');
   $('#micState').textContent=listening?'Escuchando… hablá ahora':'';
 }
 function toggleMic(){
@@ -827,29 +1206,30 @@ function render(){
     .filter(m=>m.d!==null&&m.d<=10).sort((a,b)=>a.d-b.d);
   const alE=$('#alerts');
   if(pend.length){
-    alE.innerHTML='<div class="alert-head">🔔 Cuentas por pagar <span class="badge">'+pend.length+'</span></div>'+
+    alE.innerHTML='<div class="alert-head">'+IC.bell+' Cuentas por pagar <span class="badge">'+pend.length+'</span></div>'+
       pend.map(m=>{
         let cls='y',txt='';
         if(m.d<0){cls='r';txt='Vencido hace '+Math.abs(m.d)+(Math.abs(m.d)!==1?' días':' día');}
         else if(m.d===0){cls='r';txt='Vence HOY';}
         else if(m.d<=3){cls='o';txt='Vence en '+m.d+(m.d!==1?' días':' día');}
         else{cls='y';txt='Vence en '+m.d+' días';}
-        return '<div class="al '+cls+'"><div><div class="desc">'+m.desc+'</div><div class="when">'+txt+' · '+labelMonth(monthKey(m.venc))+'</div></div><div class="amt">'+money(m.monto)+'</div><button onclick="togglePago(\''+m.id+'\')">Pagué ✓</button></div>';
+        return '<div class="al '+cls+'"><div><div class="desc">'+m.desc+'</div><div class="when">'+txt+' · '+labelMonth(monthKey(m.venc))+'</div></div><div class="amt">'+money(m.monto)+'</div><button onclick="togglePago(\''+m.id+'\')">'+IC.check+'Pagué</button></div>';
       }).join('');
   }else{
-    alE.innerHTML='<div class="empty-ok">✅ Estás al día. No hay vencimientos próximos.</div>';
+    alE.innerHTML='<div class="empty-ok">'+IC.check+'Estás al día. No hay vencimientos próximos.</div>';
   }
 
   $('#listCount').textContent=labelMonth(ym)+' · '+movs.length+' registros';
 
   if(view==='cal'){renderCalendar(ym);return;}
+  if(view==='met'){renderMetrics(ym);return;}
 
   $('#items').innerHTML = movs.length?movs.map(m=>{
     const isIn=m.tipo==='ingreso';
     const sign=isIn?'+':'−';
     const vtxt=m.venc?('Vence '+m.venc.split('-').reverse().slice(0,2).join('/')):(m.fecha.split('-').reverse().slice(0,2).join('/'));
-    return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?'🔁':'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span> '+vtxt+'</div></div><div class="amt '+(isIn?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+(!isIn?'<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>':'')+'<button class="ico" onclick="openEdit(\''+m.id+'\')">✎</button><button class="ico" onclick="delMov(\''+m.id+'\')">🗑</button></div></div>';
-  }).join(''):'<div style="padding:30px;text-align:center;color:var(--muted);font-weight:700">Sin movimientos este mes. Cargá uno arriba 👆</div>';
+    return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?IC.repeat:'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span> '+vtxt+'</div></div><div class="amt '+(isIn?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+(!isIn?'<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>':'')+'<button class="ico" onclick="openEdit(\''+m.id+'\')">'+IC.pencil+'</button><button class="ico" onclick="delMov(\''+m.id+'\')">'+IC.trash+'</button></div></div>';
+  }).join(''):'<div style="padding:30px;text-align:center;color:var(--muted);font-weight:700">Sin movimientos este mes. Cargá uno arriba</div>';
 }
 
 function renderCalendar(ym){
@@ -880,6 +1260,63 @@ function renderCalendar(ym){
   $('#calendar').innerHTML=html;
 }
 
+function renderMetrics(ym){
+  const cm=todayYM();
+  const allM=[...new Set(state.movs.map(m=>monthKey(m.venc||m.fecha)).filter(Boolean))].sort().filter(k=>k<=cm);
+  const data=allM.map(k=>{
+    const ms=state.movs.filter(m=>monthKey(m.venc||m.fecha)===k);
+    const ing=ms.filter(m=>m.tipo==='ingreso').reduce((s,m)=>s+m.monto,0);
+    const gas=ms.filter(m=>m.tipo!=='ingreso').reduce((s,m)=>s+m.monto,0);
+    const fij=ms.filter(m=>m.tipo!=='ingreso'&&m.fijo).reduce((s,m)=>s+m.monto,0);
+    return {k,ing,gas,fij,bal:ing-gas};
+  });
+  const balProm=data.length?Math.round(data.reduce((s,d)=>s+d.bal,0)/data.length):0;
+  const topGasMes=data.slice().sort((a,b)=>b.gas-a.gas)[0];
+
+  const msSel=state.movs.filter(m=>monthKey(m.venc||m.fecha)===ym&&m.tipo!=='ingreso');
+  const byCat={}; msSel.forEach(m=>byCat[m.cat]=(byCat[m.cat]||0)+m.monto);
+  const cats=Object.keys(byCat).map(k=>[k,byCat[k]]).sort((a,b)=>b[1]-a[1]);
+  const totCat=cats.reduce((s,x)=>s+x[1],0);
+  const topCat=cats[0];
+
+  const n=Math.max(1,data.length);
+  const W=Math.max(320,n*78+30), H=210, pad=24, base=H-30;
+  const maxV=Math.max(1,...data.map(d=>Math.max(d.ing,d.gas,d.fij)));
+  const slot=(W-pad*2)/n, bw=12, gap=5, group=bw*3+gap*2;
+  let bars='';
+  data.forEach((d,i)=>{
+    const x0=pad+i*slot+(slot-group)/2;
+    const cols=[[d.ing,'var(--c-ing)'],[d.gas,'var(--c-gas)'],[d.fij,'var(--accent2)']];
+    cols.forEach((c,j)=>{
+      const h=Math.round((c[0]/maxV)*(base-22));
+      const x=x0+j*(bw+gap);
+      bars+='<rect x="'+x.toFixed(1)+'" y="'+(base-h)+'" width="'+bw+'" height="'+h+'" rx="3" style="fill:'+c[1]+'"/>';
+    });
+    bars+='<text x="'+(x0+group/2).toFixed(1)+'" y="'+(base+15)+'" text-anchor="middle" font-size="10" font-weight="800" style="fill:var(--muted)">'+MESES[+d.k.split('-')[1]-1].slice(0,3)+'</text>';
+  });
+  const svg='<svg class="msvg" viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet"><line x1="'+pad+'" y1="'+base+'" x2="'+(W-pad)+'" y2="'+base+'" style="stroke:var(--line)" stroke-width="1"/>'+bars+'</svg>';
+
+  let catHtml;
+  if(cats.length){
+    catHtml=cats.map(c=>{
+      const pc=totCat?Math.round(c[1]/totCat*100):0;
+      return '<div class="catrow"><div class="top"><span>'+c[0]+'</span><span>'+money(c[1])+' · '+pc+'%</span></div><div class="tr"><i style="width:'+pc+'%"></i></div></div>';
+    }).join('');
+  } else { catHtml='<div class="sub">Sin gastos este mes.</div>'; }
+
+  $('#metrics').innerHTML=
+    '<div class="mstats">'+
+      '<div class="mstat"><div class="l">Balance promedio</div><div class="v" style="color:'+(balProm>=0?'var(--azul)':'var(--rojo)')+'">'+money(balProm)+'</div></div>'+
+      '<div class="mstat"><div class="l">Mes con más gasto</div><div class="v">'+(topGasMes?labelMonth(topGasMes.k).split(' ')[0]:'-')+'</div></div>'+
+      '<div class="mstat"><div class="l">Categoría top</div><div class="v">'+(topCat?topCat[0]:'-')+'</div></div>'+
+    '</div>'+
+    '<div class="mh">Ingresos, Salidas y Gastos fijos por mes</div>'+
+    '<div class="mlegend"><span><i style="background:var(--c-ing)"></i>Ingresos</span><span><i style="background:var(--c-gas)"></i>Salidas</span><span><i style="background:var(--accent2)"></i>Gastos fijos</span></div>'+
+    svg+
+    '<div class="mh" style="margin-top:14px">Gastos por categoría · '+labelMonth(ym)+'</div>'+
+    catHtml;
+}
+
 function dayDetail(isoD){
   const items=state.movs.filter(m=>(m.venc||m.fecha)===isoD).sort((a,b)=>a.tipo.localeCompare(b.tipo));
   $('#dayTitle').textContent='Día '+isoD.split('-').reverse().join('/');
@@ -899,7 +1336,7 @@ function backup(){
 function restore(e){
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=()=>{try{state=JSON.parse(r.result);save();buildMonths();render();alert('Copia restaurada ✓')}catch(x){alert('Archivo inválido')}};
+  r.onload=()=>{try{state=JSON.parse(r.result);save();buildMonths();render();alert('Copia restaurada')}catch(x){alert('Archivo inválido')}};
   r.readAsText(f);
 }
 function exportCSV(){
@@ -914,6 +1351,7 @@ function exportCSV(){
 function wipe(){localStorage.removeItem(KEY);state=seed();buildMonths();render()}
 
 /* ============ INIT ============ */
+migrate();cleanV3();noSeguro();hist2();
 fillCats('#fCat');
 applyTheme();
 buildMonths();
