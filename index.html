@@ -292,6 +292,7 @@ footer button:hover{color:var(--txt);border-color:var(--accent)}
         <button class="save" style="flex:1;margin:0" onclick="connectCloud()">Conectar / Sincronizar</button>
         <button class="save" style="background:var(--glass2);color:var(--txt);margin:0" onclick="disconnectCloud()">Desconectar</button>
       </div>
+      <button class="save" style="margin:0" onclick="saveCloudNow()">Guardar datos actuales en Sheets</button>
       <div class="sub" id="cloudStatus2" style="font-weight:800"></div>
       <div class="sub" style="font-size:.78rem;line-height:1.4;display:flex;gap:6px;align-items:flex-start"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h16a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> La URL es como una contraseña: cualquiera que la tenga puede ver y editar tus datos. No la compartas.</div>
     </div>
@@ -371,6 +372,7 @@ const KEY='bois_conta_v2';
 const CATS=['Gasto Fijo','Servicios','Deuda','Comida','Sueldo','Excedente del mes pasado','Changa','Venta','Ahorro','Extras','Otro','Alquiler','Cuotas','Digital Cash','Entretenimiento','Farmacia','Librería','Médico','Regalo','Ropa','Serigrafía','Supermercado','Trabajo','Transporte'];
 const EXCEDENTE_CAT='Excedente del mes pasado';
 const EXCEDENTE_DESC='Excedente del mes pasado';
+const EXCEDENTE_ZERO_UNTIL_YM='2026-06';
 const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const HIST=[{"tipo": "gasto", "monto": 6800, "desc": "aspiradora", "cat": "Otro", "fecha": "2026-02-15", "venc": "", "estado": "impago", "fijo": false},
 {"tipo": "gasto", "monto": 21333, "desc": "la santa swim", "cat": "Otro", "fecha": "2026-02-15", "venc": "", "estado": "impago", "fijo": false},
@@ -797,6 +799,18 @@ function save(){localStorage.setItem(KEY,JSON.stringify(state));schedulePush();}
 function setCloud(msg){['cloudStatus','cloudStatus2'].forEach(idd=>{const e=document.getElementById(idd);if(e)e.textContent=msg;});}
 function openCloud(){const i=$('#cloudUrl');if(i)i.value=cloudUrl;$('#ovCloud').classList.add('show');}
 function disconnectCloud(){cloudUrl='';localStorage.removeItem('bois_cloud_url');setCloud('Desconectado');}
+function saveCloudNow(){
+  const input=$('#cloudUrl')?$('#cloudUrl').value.trim():'';
+  if(input){
+    if(!/^https:\/\/script\.google\.com\/.+\/exec/.test(input)){alert('Pegá una URL válida de Apps Script que termine en /exec.');return;}
+    cloudUrl=input;
+    localStorage.setItem('bois_cloud_url',cloudUrl);
+  }
+  if(!cloudUrl){alert('Primero pegá la URL de Google Sheets / Apps Script.');return;}
+  clearTimeout(pushTimer);
+  setCloud('Guardando datos actuales en Sheets…');
+  cloudPush();
+}
 function schedulePush(){if(!cloudUrl)return;clearTimeout(pushTimer);setCloud('Guardando…');pushTimer=setTimeout(cloudPush,800);}
 function cloudPayload(){return JSON.stringify({movs:state.movs,fijos:state.fijos,cats:getCats(),goalMin:state.goalMin,goalMax:state.goalMax});}
 function cloudPush(){
@@ -811,6 +825,7 @@ function cloudPull(cb){
     if(d&&Array.isArray(d.movs)){
       state.movs=d.movs;if(Array.isArray(d.fijos))state.fijos=d.fijos;if(Array.isArray(d.cats))state.cats=d.cats;
       ensureCats();if(d.goalMin)state.goalMin=d.goalMin;if(d.goalMax)state.goalMax=d.goalMax;
+      if(zeroExcedentesThroughJune2026()){}
       localStorage.setItem(KEY,JSON.stringify(state));
       setCloud('Sincronizado');if(cb)cb(true);
     }else{setCloud('Respuesta inesperada');if(cb)cb(false);}
@@ -826,6 +841,7 @@ function connectCloud(){
     if(d.movs.length===0){cloudPush();setCloud('Conectado. Subiendo tus datos');}
     else if(confirm('La planilla ya tiene '+d.movs.length+' movimientos.\n\nAceptar = usar los de la planilla.\nCancelar = subir los de este dispositivo.')){
       state.movs=d.movs;if(Array.isArray(d.fijos))state.fijos=d.fijos;if(Array.isArray(d.cats))state.cats=d.cats;ensureCats();if(d.goalMin)state.goalMin=d.goalMin;if(d.goalMax)state.goalMax=d.goalMax;
+      if(zeroExcedentesThroughJune2026()){}
       localStorage.setItem(KEY,JSON.stringify(state));setCloud('Sincronizado');
     } else { cloudPush(); }
     buildMonths();render();
@@ -945,6 +961,27 @@ function isExcedente(m){
   return m&&m.tipo==='ingreso'&&(m.autoExcedente===true||m.excedenteManual===true||(m.desc===EXCEDENTE_DESC&&m.cat===EXCEDENTE_CAT));
 }
 function isManualExcedente(m){return isExcedente(m)&&m.excedenteManual===true;}
+function setExcedenteManualZero(m,ym){
+  Object.assign(m,{tipo:'ingreso',monto:0,desc:EXCEDENTE_DESC,cat:EXCEDENTE_CAT,fecha:ym+'-01 00:00:00',venc:'',estado:'pago',fijo:false,autoExcedente:false,excedenteManual:true});
+}
+function zeroExcedentesThroughJune2026(){
+  let changed=false;
+  if(!getCats().includes(EXCEDENTE_CAT)){state.cats.push(EXCEDENTE_CAT);changed=true;}
+  const months=[...new Set((state.movs||[]).map(m=>monthKey(m.fecha||m.venc)).filter(ym=>ym&&ym<=EXCEDENTE_ZERO_UNTIL_YM))].sort();
+  months.forEach(ym=>{
+    const matches=(state.movs||[]).filter(m=>isExcedente(m)&&monthKey(m.fecha||m.venc)===ym);
+    if(!matches.length)return;
+    const keep=matches.find(isManualExcedente)||matches[0];
+    if(keep.monto!==0||keep.desc!==EXCEDENTE_DESC||keep.cat!==EXCEDENTE_CAT||keep.tipo!=='ingreso'||keep.fecha!==ym+'-01 00:00:00'||keep.estado!=='pago'||keep.autoExcedente!==false||keep.excedenteManual!==true){
+      setExcedenteManualZero(keep,ym);
+      changed=true;
+    }
+    const keepId=keep.id;
+    const removeIds=new Set(matches.filter(m=>m.id!==keepId).map(m=>m.id));
+    if(removeIds.size){state.movs=state.movs.filter(m=>!removeIds.has(m.id));changed=true;}
+  });
+  return changed;
+}
 function monthBalance(ym){
   return (state.movs||[]).filter(m=>monthKey(m.venc||m.fecha)===ym).reduce((s,m)=>s+(m.tipo==='ingreso'?m.monto:-m.monto),0);
 }
@@ -953,6 +990,16 @@ function ensureExcedenteMonth(ym){
   const bal=Math.round(monthBalance(prev));
   const matches=(state.movs||[]).filter(m=>isExcedente(m)&&monthKey(m.fecha||m.venc)===ym);
   let changed=false;
+
+  // Hasta junio 2026, los excedentes históricos quedan manuales para que no se recalculen solos.
+  if(ym<=EXCEDENTE_ZERO_UNTIL_YM){
+    const manual=matches.find(isManualExcedente);
+    const keep=manual||matches[0];
+    if(!keep)return false;
+    const removeIds=new Set(matches.filter(m=>m.id!==keep.id&&m.autoExcedente===true).map(m=>m.id));
+    if(removeIds.size){state.movs=state.movs.filter(m=>!removeIds.has(m.id));changed=true;}
+    return changed;
+  }
 
   // Si el usuario editó el excedente, se respeta ese valor manual y no se recalcula.
   const manual=matches.find(isManualExcedente);
@@ -1605,7 +1652,7 @@ function backup(){
 function restore(e){
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=()=>{try{state=JSON.parse(r.result);ensureCats();ensureDateTimes();save();buildMonths();render();alert('Copia restaurada')}catch(x){alert('Archivo inválido')}};
+  r.onload=()=>{try{state=JSON.parse(r.result);ensureCats();ensureDateTimes();if(zeroExcedentesThroughJune2026()){}save();buildMonths();render();alert('Copia restaurada')}catch(x){alert('Archivo inválido')}};
   r.readAsText(f);
 }
 function exportCSV(){
@@ -1620,7 +1667,7 @@ function exportCSV(){
 function wipe(){localStorage.removeItem(KEY);state=seed();buildMonths();render()}
 
 /* ============ INIT ============ */
-ensureCats();migrate();cleanV3();noSeguro();hist2();if(ensureDateTimes())save();
+ensureCats();migrate();cleanV3();noSeguro();hist2();let initChanged=false;if(ensureDateTimes())initChanged=true;if(zeroExcedentesThroughJune2026())initChanged=true;if(initChanged)save();
 fillCats('#fCat','ingreso');
 applyTheme();
 buildMonths();
