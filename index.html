@@ -368,7 +368,9 @@ footer button:hover{color:var(--txt);border-color:var(--accent)}
 <script>
 /* ============ DATOS ============ */
 const KEY='bois_conta_v2';
-const CATS=['Gasto Fijo','Servicios','Deuda','Comida','Sueldo','Changa','Venta','Ahorro','Extras','Otro','Alquiler','Cuotas','Digital Cash','Entretenimiento','Farmacia','Librería','Médico','Regalo','Ropa','Serigrafía','Supermercado','Trabajo','Transporte'];
+const CATS=['Gasto Fijo','Servicios','Deuda','Comida','Sueldo','Excedente del mes pasado','Changa','Venta','Ahorro','Extras','Otro','Alquiler','Cuotas','Digital Cash','Entretenimiento','Farmacia','Librería','Médico','Regalo','Ropa','Serigrafía','Supermercado','Trabajo','Transporte'];
+const EXCEDENTE_CAT='Excedente del mes pasado';
+const EXCEDENTE_DESC='Excedente del mes pasado';
 const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const HIST=[{"tipo": "gasto", "monto": 6800, "desc": "aspiradora", "cat": "Otro", "fecha": "2026-02-15", "venc": "", "estado": "impago", "fijo": false},
 {"tipo": "gasto", "monto": 21333, "desc": "la santa swim", "cat": "Otro", "fecha": "2026-02-15", "venc": "", "estado": "impago", "fijo": false},
@@ -885,15 +887,18 @@ function hist2(){
 function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 
 function ensureFijos(ym){
-  if(ym<todayYM())return; // nunca inventar cuentas de meses ya pasados
+  if(ym<todayYM())return false; // nunca inventar cuentas de meses ya pasados
+  let changed=false;
   (state.fijos||[]).forEach(f=>{
     const exists=state.movs.some(x=>x.fijo&&x.desc.toLowerCase()===f.desc.toLowerCase()&&monthKey(x.venc||x.fecha)===ym);
     if(!exists){
       const dd=String(f.dia).padStart(2,'0');
       state.movs.push({id:id(),tipo:'deuda',monto:f.monto,desc:f.desc,cat:f.cat,
         fecha:ym+'-01 00:00:00',venc:ym+'-'+dd,estado:'impago',fijo:true});
+      changed=true;
     }
   });
+  return changed;
 }
 function monthKey(d){return d?d.slice(0,7):''}
 
@@ -905,7 +910,7 @@ function todayISO(){const d=new Date();return iso(d)}
 function nowStamp(){const d=new Date();return todayISO()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0')}
 function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function dateOnly(s){return (s||'').slice(0,10)}
-function timeOnly(s){const m=(s||'').match(/\b\d{2}:\d{2}/);return m?m[0]:''}
+function timeOnly(s){const raw=s||'';const m=raw.match(/\b\d{2}:\d{2}/);return m?m[0]:(dateOnly(raw)?'00:00':'')}
 function fmtDM(s){const d=dateOnly(s);return d?d.split('-').reverse().slice(0,2).join('/'):''}
 function fmtDMTime(s){const d=fmtDM(s),t=timeOnly(s);return d+(t?' '+t:'')}
 function movSortTime(m){const raw=(m.fecha||m.venc||'').replace(' ','T');const n=Date.parse(raw);return Number.isNaN(n)?0:n}
@@ -924,6 +929,61 @@ function lastNMonthsEndingAt(ym,n){
   const out=[];
   for(let i=n-1;i>=0;i--) out.push(addMonthsYM(ym,-i));
   return out;
+}
+function ensureDateTimes(){
+  let changed=false;
+  (state.movs||[]).forEach(m=>{
+    if(/^\d{4}-\d{2}-\d{2}$/.test(m.fecha||'')){
+      m.fecha=m.fecha+' 00:00:00';
+      changed=true;
+    }
+  });
+  if(!state.dateTimesV1){state.dateTimesV1=1;changed=true;}
+  return changed;
+}
+function isExcedente(m){return m&&m.tipo==='ingreso'&&(m.autoExcedente===true||(m.desc===EXCEDENTE_DESC&&m.cat===EXCEDENTE_CAT));}
+function monthBalance(ym){
+  return (state.movs||[]).filter(m=>monthKey(m.venc||m.fecha)===ym).reduce((s,m)=>s+(m.tipo==='ingreso'?m.monto:-m.monto),0);
+}
+function ensureExcedenteMonth(ym){
+  const prev=addMonthsYM(ym,-1);
+  const bal=Math.round(monthBalance(prev));
+  const matches=(state.movs||[]).filter(m=>isExcedente(m)&&monthKey(m.fecha||m.venc)===ym);
+  let changed=false;
+  if(bal>0){
+    if(!getCats().includes(EXCEDENTE_CAT)){state.cats.push(EXCEDENTE_CAT);changed=true;}
+    const keep=matches[0];
+    if(keep){
+      if(keep.monto!==bal||keep.desc!==EXCEDENTE_DESC||keep.cat!==EXCEDENTE_CAT||keep.tipo!=='ingreso'||keep.fecha!==ym+'-01 00:00:00'||keep.estado!=='pago'||keep.autoExcedente!==true){
+        Object.assign(keep,{tipo:'ingreso',monto:bal,desc:EXCEDENTE_DESC,cat:EXCEDENTE_CAT,fecha:ym+'-01 00:00:00',venc:'',estado:'pago',fijo:false,autoExcedente:true});
+        changed=true;
+      }
+    }else{
+      state.movs.push({id:id(),tipo:'ingreso',monto:bal,desc:EXCEDENTE_DESC,cat:EXCEDENTE_CAT,fecha:ym+'-01 00:00:00',venc:'',estado:'pago',fijo:false,autoExcedente:true});
+      changed=true;
+    }
+    if(matches.length>1){
+      const removeIds=new Set(matches.slice(1).map(m=>m.id));
+      state.movs=state.movs.filter(m=>!removeIds.has(m.id));
+      changed=true;
+    }
+  }else if(matches.length){
+    const removeIds=new Set(matches.map(m=>m.id));
+    state.movs=state.movs.filter(m=>!removeIds.has(m.id));
+    changed=true;
+  }
+  return changed;
+}
+function ensureExcedentesThrough(limitYm){
+  const months=(state.movs||[]).map(m=>monthKey(m.venc||m.fecha)).filter(Boolean).sort();
+  if(!months.length)return false;
+  let ym=months[0], changed=false;
+  while(ym<=limitYm){
+    if(ensureFijos(ym))changed=true;
+    if(ym!==months[0]&&ensureExcedenteMonth(ym))changed=true;
+    ym=addMonthsYM(ym,1);
+  }
+  return changed;
 }
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 
@@ -1273,7 +1333,9 @@ function toggleAlertsBox(){
 /* ============ RENDER ============ */
 function render(){
   const ym=$('#monthSel').value||todayYM();
-  ensureFijos(ym);save();
+  const changed=ensureExcedentesThrough(ym);
+  save();
+  if(changed){const cur=$('#monthSel').value||ym;buildMonths();$('#monthSel').value=cur;}
   const movs=state.movs.filter(m=>monthKey(m.venc||m.fecha)===ym)
     .sort((a,b)=>movSortTime(b)-movSortTime(a));
 
@@ -1321,7 +1383,7 @@ function render(){
   $('#items').innerHTML = movs.length?movs.map(m=>{
     const isIn=m.tipo==='ingreso';
     const sign=isIn?'+':'−';
-    const vtxt=m.tipo==='deuda'&&m.venc?('Vence '+fmtDM(m.venc)):('Cargado '+fmtDMTime(m.fecha));
+    const vtxt=m.tipo==='deuda'&&m.venc?('Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha)):('Cargado '+fmtDMTime(m.fecha));
     const status=!isIn?(m.tipo==='deuda'?'<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>':'<span class="pill pago">Pagado</span>'):'';
     return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?IC.repeat:'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span> '+vtxt+'</div></div><div class="amt '+(isIn?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+status+'<button class="ico" onclick="openEdit(\''+m.id+'\')">'+IC.pencil+'</button><button class="ico" onclick="delMov(\''+m.id+'\')">'+IC.trash+'</button></div></div>';
   }).join(''):'<div style="padding:30px;text-align:center;color:var(--muted);font-weight:700">Sin movimientos este mes. Cargá uno arriba</div>';
@@ -1497,7 +1559,8 @@ function dayDetail(isoD){
   $('#dayItems').innerHTML=items.length?items.map(m=>{
     const isIn=m.tipo==='ingreso';
     const status=!isIn?(m.tipo==='deuda'?'<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\');dayDetail(\''+isoD+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>':'<span class="pill pago">Pagado</span>'):'';
-    return '<div class="dayrow"><span class="dot '+m.tipo+'"></span><div style="flex:1"><div style="font-weight:800">'+m.desc+'</div><div class="sub">'+m.cat+'</div></div><div class="amt '+(isIn?'in':'out')+'" style="font-weight:900">'+(isIn?'+':'−')+money(m.monto)+'</div>'+status+'</div>';
+    const meta=(m.tipo==='deuda'&&m.venc)?(m.cat+' · Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha)):(m.cat+' · Cargado '+fmtDMTime(m.fecha));
+    return '<div class="dayrow"><span class="dot '+m.tipo+'"></span><div style="flex:1"><div style="font-weight:800">'+m.desc+'</div><div class="sub">'+meta+'</div></div><div class="amt '+(isIn?'in':'out')+'" style="font-weight:900">'+(isIn?'+':'−')+money(m.monto)+'</div>'+status+'</div>';
   }).join(''):'<div class="sub">Sin movimientos este día.</div>';
   $('#ovDay').classList.add('show');
 }
@@ -1511,7 +1574,7 @@ function backup(){
 function restore(e){
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=()=>{try{state=JSON.parse(r.result);save();buildMonths();render();alert('Copia restaurada')}catch(x){alert('Archivo inválido')}};
+  r.onload=()=>{try{state=JSON.parse(r.result);ensureCats();ensureDateTimes();save();buildMonths();render();alert('Copia restaurada')}catch(x){alert('Archivo inválido')}};
   r.readAsText(f);
 }
 function exportCSV(){
@@ -1526,7 +1589,7 @@ function exportCSV(){
 function wipe(){localStorage.removeItem(KEY);state=seed();buildMonths();render()}
 
 /* ============ INIT ============ */
-ensureCats();migrate();cleanV3();noSeguro();hist2();
+ensureCats();migrate();cleanV3();noSeguro();hist2();if(ensureDateTimes())save();
 fillCats('#fCat','ingreso');
 applyTheme();
 buildMonths();
