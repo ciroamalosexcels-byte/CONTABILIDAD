@@ -941,7 +941,10 @@ function ensureDateTimes(){
   if(!state.dateTimesV1){state.dateTimesV1=1;changed=true;}
   return changed;
 }
-function isExcedente(m){return m&&m.tipo==='ingreso'&&(m.autoExcedente===true||(m.desc===EXCEDENTE_DESC&&m.cat===EXCEDENTE_CAT));}
+function isExcedente(m){
+  return m&&m.tipo==='ingreso'&&(m.autoExcedente===true||m.excedenteManual===true||(m.desc===EXCEDENTE_DESC&&m.cat===EXCEDENTE_CAT));
+}
+function isManualExcedente(m){return isExcedente(m)&&m.excedenteManual===true;}
 function monthBalance(ym){
   return (state.movs||[]).filter(m=>monthKey(m.venc||m.fecha)===ym).reduce((s,m)=>s+(m.tipo==='ingreso'?m.monto:-m.monto),0);
 }
@@ -950,27 +953,39 @@ function ensureExcedenteMonth(ym){
   const bal=Math.round(monthBalance(prev));
   const matches=(state.movs||[]).filter(m=>isExcedente(m)&&monthKey(m.fecha||m.venc)===ym);
   let changed=false;
+
+  // Si el usuario editó el excedente, se respeta ese valor manual y no se recalcula.
+  const manual=matches.find(isManualExcedente);
+  if(manual){
+    const removeIds=new Set(matches.filter(m=>m.id!==manual.id&&m.autoExcedente===true).map(m=>m.id));
+    if(removeIds.size){state.movs=state.movs.filter(m=>!removeIds.has(m.id));changed=true;}
+    return changed;
+  }
+
   if(bal>0){
     if(!getCats().includes(EXCEDENTE_CAT)){state.cats.push(EXCEDENTE_CAT);changed=true;}
-    const keep=matches[0];
+    const keep=matches.find(m=>m.autoExcedente===true)||matches[0];
     if(keep){
-      if(keep.monto!==bal||keep.desc!==EXCEDENTE_DESC||keep.cat!==EXCEDENTE_CAT||keep.tipo!=='ingreso'||keep.fecha!==ym+'-01 00:00:00'||keep.estado!=='pago'||keep.autoExcedente!==true){
-        Object.assign(keep,{tipo:'ingreso',monto:bal,desc:EXCEDENTE_DESC,cat:EXCEDENTE_CAT,fecha:ym+'-01 00:00:00',venc:'',estado:'pago',fijo:false,autoExcedente:true});
+      if(keep.monto!==bal||keep.desc!==EXCEDENTE_DESC||keep.cat!==EXCEDENTE_CAT||keep.tipo!=='ingreso'||keep.fecha!==ym+'-01 00:00:00'||keep.estado!=='pago'||keep.autoExcedente!==true||keep.excedenteManual===true){
+        Object.assign(keep,{tipo:'ingreso',monto:bal,desc:EXCEDENTE_DESC,cat:EXCEDENTE_CAT,fecha:ym+'-01 00:00:00',venc:'',estado:'pago',fijo:false,autoExcedente:true,excedenteManual:false});
         changed=true;
       }
     }else{
-      state.movs.push({id:id(),tipo:'ingreso',monto:bal,desc:EXCEDENTE_DESC,cat:EXCEDENTE_CAT,fecha:ym+'-01 00:00:00',venc:'',estado:'pago',fijo:false,autoExcedente:true});
+      state.movs.push({id:id(),tipo:'ingreso',monto:bal,desc:EXCEDENTE_DESC,cat:EXCEDENTE_CAT,fecha:ym+'-01 00:00:00',venc:'',estado:'pago',fijo:false,autoExcedente:true,excedenteManual:false});
       changed=true;
     }
-    if(matches.length>1){
-      const removeIds=new Set(matches.slice(1).map(m=>m.id));
+    const keepId=keep&&keep.id;
+    const removeIds=new Set(matches.filter(m=>m.id!==keepId&&m.autoExcedente===true).map(m=>m.id));
+    if(removeIds.size){
       state.movs=state.movs.filter(m=>!removeIds.has(m.id));
       changed=true;
     }
-  }else if(matches.length){
-    const removeIds=new Set(matches.map(m=>m.id));
-    state.movs=state.movs.filter(m=>!removeIds.has(m.id));
-    changed=true;
+  }else{
+    const removeIds=new Set(matches.filter(m=>m.autoExcedente===true&&!m.excedenteManual).map(m=>m.id));
+    if(removeIds.size){
+      state.movs=state.movs.filter(m=>!removeIds.has(m.id));
+      changed=true;
+    }
   }
   return changed;
 }
@@ -1086,6 +1101,9 @@ function addMov(){
     venc:tipo==='deuda'?($('#fVenc').value||''):'',
     estado:tipo==='deuda'?'impago':'pago',
     fijo:tipo==='deuda'&&$('#fFijo').checked};
+  if(cat===EXCEDENTE_CAT||desc===EXCEDENTE_DESC){
+    m.tipo='ingreso';m.estado='pago';m.venc='';m.fijo=false;m.autoExcedente=false;m.excedenteManual=true;
+  }
   state.movs.push(m);
   if(m.fijo){
     const dia=m.venc?parseInt(m.venc.slice(8,10)):10;
@@ -1128,10 +1146,19 @@ function openEdit(mid){
 function saveEdit(){
   const m=state.movs.find(x=>x.id===editId);
   const oldTipo=m.tipo;
+  const wasExcedente=isExcedente(m);
   m.monto=parseFloat($('#eMonto').value)||0;m.tipo=$('#eTipo').value;
   m.desc=$('#eDesc').value.trim();m.cat=$('#eCat').value||defaultCat(m.tipo);m.venc=m.tipo==='deuda'?$('#eVenc').value:'';
   if(m.tipo!=='deuda'){m.estado='pago';m.fijo=false;}
   else if(oldTipo!=='deuda'&&m.estado==='pago'){m.estado='impago';}
+  if(wasExcedente||m.cat===EXCEDENTE_CAT||m.desc===EXCEDENTE_DESC){
+    m.autoExcedente=false;
+    m.excedenteManual=true;
+    m.tipo='ingreso';
+    m.estado='pago';
+    m.venc='';
+    m.fijo=false;
+  }
   save();$('#ov').classList.remove('show');buildMonths();render();
 }
 $('#ov').addEventListener('click',e=>{if(e.target.id==='ov')$('#ov').classList.remove('show')});
@@ -1288,6 +1315,9 @@ function addVoice(){
   const m={id:id(),tipo:mTipo,monto,desc,cat,
     fecha:nowStamp(),venc:mTipo==='deuda'?($('#mVenc').value||''):'',
     estado:mTipo==='deuda'?'impago':'pago',fijo:false};
+  if(cat===EXCEDENTE_CAT||desc===EXCEDENTE_DESC){
+    m.tipo='ingreso';m.estado='pago';m.venc='';m.fijo=false;m.autoExcedente=false;m.excedenteManual=true;
+  }
   state.movs.push(m);save();
   closeVoice();
   buildMonths();$('#monthSel').value=monthKey(m.venc||m.fecha);
@@ -1384,8 +1414,9 @@ function render(){
     const isIn=m.tipo==='ingreso';
     const sign=isIn?'+':'−';
     const vtxt=m.tipo==='deuda'&&m.venc?('Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha)):('Cargado '+fmtDMTime(m.fecha));
+    const manualTag=isManualExcedente(m)?' <span class="cat-tag">Manual</span>':'';
     const status=!isIn?(m.tipo==='deuda'?'<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>':'<span class="pill pago">Pagado</span>'):'';
-    return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?IC.repeat:'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span> '+vtxt+'</div></div><div class="amt '+(isIn?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+status+'<button class="ico" onclick="openEdit(\''+m.id+'\')">'+IC.pencil+'</button><button class="ico" onclick="delMov(\''+m.id+'\')">'+IC.trash+'</button></div></div>';
+    return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?IC.repeat:'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span>'+manualTag+' '+vtxt+'</div></div><div class="amt '+(isIn?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+status+'<button class="ico" onclick="openEdit(\''+m.id+'\')">'+IC.pencil+'</button><button class="ico" onclick="delMov(\''+m.id+'\')">'+IC.trash+'</button></div></div>';
   }).join(''):'<div style="padding:30px;text-align:center;color:var(--muted);font-weight:700">Sin movimientos este mes. Cargá uno arriba</div>';
 }
 
@@ -1559,7 +1590,7 @@ function dayDetail(isoD){
   $('#dayItems').innerHTML=items.length?items.map(m=>{
     const isIn=m.tipo==='ingreso';
     const status=!isIn?(m.tipo==='deuda'?'<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\');dayDetail(\''+isoD+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>':'<span class="pill pago">Pagado</span>'):'';
-    const meta=(m.tipo==='deuda'&&m.venc)?(m.cat+' · Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha)):(m.cat+' · Cargado '+fmtDMTime(m.fecha));
+    const meta=(m.tipo==='deuda'&&m.venc)?(m.cat+' · Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha)):(m.cat+(isManualExcedente(m)?' · Manual':'')+' · Cargado '+fmtDMTime(m.fecha));
     return '<div class="dayrow"><span class="dot '+m.tipo+'"></span><div style="flex:1"><div style="font-weight:800">'+m.desc+'</div><div class="sub">'+meta+'</div></div><div class="amt '+(isIn?'in':'out')+'" style="font-weight:900">'+(isIn?'+':'−')+money(m.monto)+'</div>'+status+'</div>';
   }).join(''):'<div class="sub">Sin movimientos este día.</div>';
   $('#ovDay').classList.add('show');
