@@ -359,6 +359,11 @@ body.win .goal-menu{background:#fff!important;box-shadow:3px 3px 0 #000!importan
 body.win .fab-add{border-radius:0!important;background:#9c9cc4!important;color:#000!important;border:2px solid #000!important;box-shadow:inset 2px 2px 0 #fff,inset -2px -2px 0 #555,3px 3px 0 #000!important}
 @media(max-width:720px){.fab-group{right:16px;bottom:16px;gap:10px}.fab-add{width:58px;height:58px}.quick-modal{max-width:96vw}}
 
+
+.fiscal-tag{margin-left:4px}
+.fiscal-tag.blanco{color:var(--azul)}
+.fiscal-tag.negro{color:var(--muted)}
+body.win .fiscal-tag{border:1px solid #000!important}
 </style>
 </head>
 <body>
@@ -429,6 +434,7 @@ body.win .fab-add{border-radius:0!important;background:#9c9cc4!important;color:#
   <button onclick="exportCSV()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/></svg> Exportar CSV</button>
   <button onclick="openCloud()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/></svg> Google Sheets</button>
   <button onclick="if(confirm('¿Borrar TODOS los datos? Esto no se puede deshacer.'))wipe()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Borrar todo</button>
+  <button id="toggleFiscalBtn" onclick="toggleFiscalFeature()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10"/><path d="M7 12h6"/><path d="M7 16h8"/></svg> </button>
   <input type="file" id="restoreFile" accept=".json" style="display:none" onchange="restore(event)">
   <span class="sub" id="cloudStatus" style="width:100%;text-align:center"></span>
 </footer>
@@ -482,6 +488,7 @@ body.win .fab-add{border-radius:0!important;background:#9c9cc4!important;color:#
           <div><label>Categoría</label><select id="mCat"></select></div>
         </div>
         <div><label>Descripción</label><input id="mDesc"></div>
+        <div class="fiscal-inline" id="mFiscalWrap" style="display:none"><div><label>Facturación</label><select id="mFiscal"><option value="negro">En negro / no facturado</option><option value="blanco">En blanco / facturado</option></select></div></div>
         <div id="mVencWrap"><label id="mVencLbl">Vencimiento</label><input id="mVenc" type="date"></div>
         <button class="save" onclick="addVoice()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Agregar</button>
       </div>
@@ -513,6 +520,9 @@ body.win .fab-add{border-radius:0!important;background:#9c9cc4!important;color:#
       <div><label>Descripción</label><input id="eDesc"></div>
       <div class="mrow">
         <div><label>Categoría</label><select id="eCat"></select></div>
+        <div class="fiscal-inline" id="eFiscalWrap" style="display:none"><label>Facturación</label><select id="eFiscal"><option value="negro">En negro / no facturado</option><option value="blanco">En blanco / facturado</option></select></div>
+      </div>
+      <div class="mrow">
         <div id="eVencWrap"><label>Vencimiento</label><input id="eVenc" type="date"></div>
       </div>
       <label class="fijo-chk"><input type="checkbox" id="eRepeat" onchange="toggleEditRepeat()"> <svg class="ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m17 1 4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="m7 23-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg> Repetir todos los meses</label>
@@ -565,6 +575,10 @@ body.win .fab-add{border-radius:0!important;background:#9c9cc4!important;color:#
         <button class="catbtn" onclick="deleteCategory()" type="button" title="Borrar categoría">−</button>
       </div>
     </div>
+  </div>
+
+  <div class="fecha-wrap fiscal-wrap" id="fFiscalWrap" style="display:none">
+    <div><label>Facturación</label><select id="fFiscal"><option value="negro">En negro / no facturado</option><option value="blanco">En blanco / facturado</option></select></div>
   </div>
 
   <div class="fecha-wrap" id="fechaWrap" style="display:none">
@@ -1016,6 +1030,9 @@ const HIST2=[{"tipo": "ingreso", "monto": 920000, "desc": "Sueldo", "cat": "Suel
 let state=load();
 (state.fijos||[]).forEach(f=>{if(!f.id)f.id=id();});
 (state.movs||[]).forEach(m=>{if(m.fijo&&!m.fijoId){const f=(state.fijos||[]).find(x=>x.desc.toLowerCase()===m.desc.toLowerCase());if(f)m.fijoId=f.id;}});
+(state.movs||[]).forEach(m=>{if(!m.fiscal)m.fiscal='negro';});
+(state.fijos||[]).forEach(f=>{if(!f.fiscal)f.fiscal='negro';});
+if(state.useFiscal===undefined)state.useFiscal=true;
 localStorage.setItem(KEY,JSON.stringify(state));
 let tipo='gasto';
 let editId=null;
@@ -1038,6 +1055,7 @@ function toggleGoalMenu(e){if(e)e.stopPropagation();const m=$('#goalMenu');if(m)
 function closeGoalMenu(){const m=$('#goalMenu');if(m)m.classList.remove('show');}
 function openGoalEdit(){
   closeGoalMenu();
+  updateFiscalUI();
   $('#goalMinInput').value=formatMoneyInput(state.goalMin||0);
   $('#goalMaxInput').value=formatMoneyInput(state.goalMax||0);
   $('#ovGoal').classList.add('show');
@@ -1051,6 +1069,7 @@ function saveGoalEdit(){
   save();$('#ovGoal').classList.remove('show');render();
 }
 function openQuickAdd(){
+  updateFiscalUI();
   $('#ovQuick').classList.add('show');
   setTimeout(()=>$('#fMonto').focus(),50);
 }
@@ -1070,7 +1089,7 @@ function saveCloudNow(){
   cloudPush();
 }
 function schedulePush(){if(!cloudUrl)return;clearTimeout(pushTimer);setCloud('Guardando…');pushTimer=setTimeout(cloudPush,800);}
-function cloudPayload(){return JSON.stringify({movs:state.movs,fijos:state.fijos,cats:getCats(),goalMin:state.goalMin,goalMax:state.goalMax});}
+function cloudPayload(){return JSON.stringify({movs:state.movs,fijos:state.fijos,cats:getCats(),goalMin:state.goalMin,goalMax:state.goalMax,useFiscal:!!state.useFiscal});}
 function cloudPush(){
   if(!cloudUrl)return;
   fetch(cloudUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:cloudPayload()})
@@ -1082,7 +1101,7 @@ function cloudPull(cb){
   fetch(cloudUrl).then(r=>r.json()).then(d=>{
     if(d&&Array.isArray(d.movs)){
       state.movs=d.movs;if(Array.isArray(d.fijos))state.fijos=d.fijos;if(Array.isArray(d.cats))state.cats=d.cats;
-      ensureCats();if(d.goalMin)state.goalMin=d.goalMin;if(d.goalMax)state.goalMax=d.goalMax;
+      ensureCats();if(d.goalMin)state.goalMin=d.goalMin;if(d.goalMax)state.goalMax=d.goalMax;if(typeof d.useFiscal!=='undefined')state.useFiscal=!!d.useFiscal;
       if(zeroExcedentesThroughJune2026()){}
       localStorage.setItem(KEY,JSON.stringify(state));
       setCloud('Sincronizado');if(cb)cb(true);
@@ -1098,7 +1117,7 @@ function connectCloud(){
     if(!d||!Array.isArray(d.movs))throw 0;
     if(d.movs.length===0){cloudPush();setCloud('Conectado. Subiendo tus datos');}
     else if(confirm('La planilla ya tiene '+d.movs.length+' movimientos.\n\nAceptar = usar los de la planilla.\nCancelar = subir los de este dispositivo.')){
-      state.movs=d.movs;if(Array.isArray(d.fijos))state.fijos=d.fijos;if(Array.isArray(d.cats))state.cats=d.cats;ensureCats();if(d.goalMin)state.goalMin=d.goalMin;if(d.goalMax)state.goalMax=d.goalMax;
+      state.movs=d.movs;if(Array.isArray(d.fijos))state.fijos=d.fijos;if(Array.isArray(d.cats))state.cats=d.cats;ensureCats();if(d.goalMin)state.goalMin=d.goalMin;if(d.goalMax)state.goalMax=d.goalMax;if(typeof d.useFiscal!=='undefined')state.useFiscal=!!d.useFiscal;
       if(zeroExcedentesThroughJune2026()){}
       localStorage.setItem(KEY,JSON.stringify(state));setCloud('Sincronizado');
     } else { cloudPush(); }
@@ -1109,20 +1128,20 @@ function connectCloud(){
 
 function seed(){
   const fijos=[
-    {desc:'Alquiler',cat:'Gasto Fijo',monto:720000,dia:10},
-    {desc:'Camuzzi',cat:'Servicios',monto:13080,dia:8},
-    {desc:'Edea',cat:'Servicios',monto:31794,dia:2},
-    {desc:'Nave Internet',cat:'Servicios',monto:15407,dia:1},
-    {desc:'Claro',cat:'Servicios',monto:9621,dia:5}
+    {desc:'Alquiler',cat:'Gasto Fijo',monto:720000,dia:10,fiscal:'negro'},
+    {desc:'Camuzzi',cat:'Servicios',monto:13080,dia:8,fiscal:'negro'},
+    {desc:'Edea',cat:'Servicios',monto:31794,dia:2,fiscal:'negro'},
+    {desc:'Nave Internet',cat:'Servicios',monto:15407,dia:1,fiscal:'negro'},
+    {desc:'Claro',cat:'Servicios',monto:9621,dia:5,fiscal:'negro'}
   ];
   const movs=[
-    {id:id(),tipo:'ingreso',monto:280000,desc:'Mercado Libre Venta Lente',cat:'Venta',fecha:'2026-06-01',venc:'',estado:'pago',fijo:false},
-    {id:id(),tipo:'ingreso',monto:500000,desc:'Sueldo Biomarketing',cat:'Sueldo',fecha:'2026-06-01',venc:'',estado:'pago',fijo:false},
-    {id:id(),tipo:'ingreso',monto:80000,desc:'Changa',cat:'Changa',fecha:'2026-06-11',venc:'',estado:'pago',fijo:false}
+    {id:id(),tipo:'ingreso',monto:280000,desc:'Mercado Libre Venta Lente',cat:'Venta',fecha:'2026-06-01',venc:'',estado:'pago',fijo:false,fiscal:'negro'},
+    {id:id(),tipo:'ingreso',monto:500000,desc:'Sueldo Biomarketing',cat:'Sueldo',fecha:'2026-06-01',venc:'',estado:'pago',fijo:false,fiscal:'negro'},
+    {id:id(),tipo:'ingreso',monto:80000,desc:'Changa',cat:'Changa',fecha:'2026-06-11',venc:'',estado:'pago',fijo:false,fiscal:'negro'}
   ];
-  return {movs:histMovs().concat(histMovs2()).concat(movs),fijos,cats:CATS.slice(),goalMin:1200000,goalMax:1600000,seededHist:1,cleanV3:1,noSeguro:1,hist2:1};
+  return {movs:histMovs().concat(histMovs2()).concat(movs),fijos,cats:CATS.slice(),goalMin:1200000,goalMax:1600000,useFiscal:true,seededHist:1,cleanV3:1,noSeguro:1,hist2:1};
 }
-function histMovs(){return HIST.map(h=>Object.assign({},h,{id:id()}));}
+function histMovs(){return HIST.map(h=>Object.assign({},h,{id:id(),fiscal:h.fiscal||'negro'}));}
 function migrate(){
   if(state.seededHist)return;
   const k=m=>m.tipo+'|'+(m.venc||m.fecha).slice(0,7)+'|'+m.desc.toLowerCase()+'|'+m.monto;
@@ -1150,7 +1169,7 @@ function noSeguro(){
   state.movs=state.movs.filter(m=>!(/seguro/i.test(m.desc)&&monthKey(m.venc||m.fecha)>='2026-06'));
   state.noSeguro=1; save();
 }
-function histMovs2(){return HIST2.map(h=>Object.assign({},h,{id:id()}));}
+function histMovs2(){return HIST2.map(h=>Object.assign({},h,{id:id(),fiscal:h.fiscal||'negro'}));}
 function hist2(){
   if(state.hist2)return;
   const k=m=>m.tipo+'|'+(m.venc||m.fecha).slice(0,7)+'|'+m.desc.toLowerCase()+'|'+m.monto;
@@ -1172,7 +1191,7 @@ function ensureFijos(ym){
       if(!f.id)f.id=id();
       const safeDay=safeDayForMonth(ym,parseInt(f.dia,10)||1);
       state.movs.push({id:id(),tipo:genTipo,monto:f.monto,desc:f.desc,cat:f.cat,
-        fecha:ym+'-01 00:00:00',venc:ym+'-'+String(safeDay).padStart(2,'0'),estado:'impago',fijo:true,fijoId:f.id});
+        fecha:ym+'-01 00:00:00',venc:ym+'-'+String(safeDay).padStart(2,'0'),estado:'impago',fijo:true,fijoId:f.id,fiscal:f.fiscal||'negro'});
       changed=true;
     }
   });
@@ -1247,6 +1266,18 @@ function initModalCloseButtons(){
     modal.prepend(btn);
   });
 }
+function fiscalValue(v){return v==='blanco'?'blanco':'negro';}
+function fiscalLabel(v){return fiscalValue(v)==='blanco'?'En blanco':'En negro';}
+function isWhiteFiscal(m){return fiscalValue(m&&m.fiscal)==='blanco';}
+function fiscalTagHtml(m){if(!state.useFiscal)return '';const v=fiscalValue(m&&m.fiscal);return ' <span class="cat-tag fiscal-tag '+v+'">'+fiscalLabel(v)+'</span>'; }
+function updateFiscalUI(){
+  const on=!!state.useFiscal;
+  document.querySelectorAll('.fiscal-wrap').forEach(el=>{el.style.display=on?'block':'none';});
+  document.querySelectorAll('.fiscal-inline').forEach(el=>{el.style.display=on?'grid':'none';});
+  const btn=$('#toggleFiscalBtn');
+  if(btn){btn.innerHTML='<svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10"/><path d="M7 12h6"/><path d="M7 16h8"/></svg> '+(on?'Desactivar blanco / negro':'Activar blanco / negro');}
+}
+function toggleFiscalFeature(){state.useFiscal=!state.useFiscal;save();updateFiscalUI();render();}
 function fmtDM(s){const d=dateOnly(s);return d?d.split('-').reverse().slice(0,2).join('/'):''}
 function fmtDMTime(s){const d=fmtDM(s),t=timeOnly(s);return d+(t?' '+t:'')}
 function movSortTime(m){const raw=(m.fecha||m.venc||'').replace(' ','T');const n=Date.parse(raw);return Number.isNaN(n)?0:n}
@@ -1491,6 +1522,7 @@ function addMov(){
   const cuotas=$('#fCuotas')&&$('#fCuotas').checked;
   const fechaInput=$('#fVenc')?$('#fVenc').value:'';
   const esExcedente=(cat===EXCEDENTE_CAT||desc===EXCEDENTE_DESC);
+  const fiscal=state.useFiscal?fiscalValue($('#fFiscal')?$('#fFiscal').value:'negro'):'negro';
   let jumpYM=null;
 
   if(cuotas && !esExcedente){
@@ -1502,14 +1534,14 @@ function addMov(){
     for(let i=0;i<n;i++){
       const fch=addMonthsISO(start,i);
       state.movs.push({id:id(),tipo:genTipo,monto:per,desc:desc+' ('+(i+1)+'/'+n+')',cat,
-        fecha:nowStamp(),venc:fch,estado:'impago',fijo:false,cuota:true});
+        fecha:nowStamp(),venc:fch,estado:'impago',fijo:false,cuota:true,fiscal});
     }
     jumpYM=monthKey(start);
   } else {
     const m={id:id(),tipo:t,monto,desc,cat,fecha:nowStamp(),
       venc:(t==='deuda'||t==='medeben')?(fechaInput||''):'',
       estado:(t==='deuda'||t==='medeben')?'impago':'pago',
-      fijo:!!repeat};
+      fijo:!!repeat,fiscal};
     if(esExcedente){m.tipo='ingreso';m.estado='pago';m.venc='';m.fijo=false;m.autoExcedente=false;m.excedenteManual=true;}
     state.movs.push(m);
     jumpYM=monthKey(m.venc||m.fecha);
@@ -1517,14 +1549,14 @@ function addMov(){
       const dia=$('#fRepeatDay').value?parseInt($('#fRepeatDay').value):(m.venc?parseInt(m.venc.slice(8,10)):new Date().getDate());
       const ftipo=income?'ingreso':'gasto';
       const exist=state.fijos.find(f=>f.desc.toLowerCase()===desc.toLowerCase());
-      if(exist){exist.tipo=ftipo;exist.cat=cat;exist.monto=monto;exist.dia=dia;}
-      else state.fijos.push({tipo:ftipo,desc,cat,monto,dia});
+      if(exist){exist.tipo=ftipo;exist.cat=cat;exist.monto=monto;exist.dia=dia;exist.fiscal=fiscal;}
+      else state.fijos.push({tipo:ftipo,desc,cat,monto,dia,fiscal});
     }
   }
   save();
   $('#fMonto').value='';$('#fDesc').value='';if($('#fVenc'))$('#fVenc').value='';
   if($('#fRepeat'))$('#fRepeat').checked=false;if($('#fCuotas'))$('#fCuotas').checked=false;
-  if($('#fRepeatDay'))$('#fRepeatDay').value='';if($('#fCuotasN'))$('#fCuotasN').value='';if($('#fCuotasStart'))$('#fCuotasStart').value='';
+  if($('#fRepeatDay'))$('#fRepeatDay').value='';if($('#fCuotasN'))$('#fCuotasN').value='';if($('#fCuotasStart'))$('#fCuotasStart').value='';if($('#fFiscal'))$('#fFiscal').value='negro';
   toggleOpts();
   $('#preview').innerHTML='';$('#speechTxt').value='';
   buildMonths();if(jumpYM)$('#monthSel').value=jumpYM;
@@ -1572,6 +1604,7 @@ function openEdit(mid){
   $('#eRepeat').checked=!!(fijo||m.fijo);
   $('#eRepeatDay').value=fijo&&fijo.dia?fijo.dia:((m.venc||m.fecha||'').slice(8,10)||'');
   $('#eRepeatScope').value='future';
+  if($('#eFiscal'))$('#eFiscal').value=fiscalValue(m.fiscal);
   toggleEditRepeat();
   $('#ov').classList.add('show');
 }
@@ -1585,6 +1618,7 @@ function saveEdit(){
   const newTipo=$('#eTipo').value;
   const newDesc=$('#eDesc').value.trim();
   const newCat=$('#eCat').value||defaultCat(newTipo);
+  const newFiscal=state.useFiscal?fiscalValue($('#eFiscal')?$('#eFiscal').value:'negro'):fiscalValue(m.fiscal);
   const repeat=$('#eRepeat').checked;
   const scope=$('#eRepeatScope').value;
   const rawDay=parseInt($('#eRepeatDay').value,10);
@@ -1592,7 +1626,7 @@ function saveEdit(){
   if(!newDesc){alert('Escribí una descripción.');return;}
   if(repeat&&!day){alert('Indicá el día del mes en que se renueva.');return;}
 
-  m.monto=amount;m.tipo=newTipo;m.desc=newDesc;m.cat=newCat;
+  m.monto=amount;m.tipo=newTipo;m.desc=newDesc;m.cat=newCat;m.fiscal=newFiscal;
   m.venc=(newTipo==='deuda'||newTipo==='medeben')?$('#eVenc').value:'';
   if(newTipo==='ingreso'||newTipo==='gasto')m.estado='pago';
   else if(oldTipo==='ingreso'||oldTipo==='gasto')m.estado='impago';
@@ -1604,14 +1638,14 @@ function saveEdit(){
       let fijo=oldFijo;
       if(!fijo){fijo={id:id()};state.fijos.push(fijo);}
       if(!fijo.id)fijo.id=id();
-      fijo.tipo=recurringBaseType(newTipo);fijo.desc=newDesc;fijo.cat=newCat;fijo.monto=amount;fijo.dia=day;
+      fijo.tipo=recurringBaseType(newTipo);fijo.desc=newDesc;fijo.cat=newCat;fijo.monto=amount;fijo.dia=day;fijo.fiscal=newFiscal;
       const fid=fijo.id;
       const currentYM=monthKey(m.venc||m.fecha)||todayYM();
       state.movs.forEach(x=>{
         const linked=(x.id===m.id)||(x.fijoId&&x.fijoId===fid)||(!x.fijoId&&oldDesc&&x.fijo&&x.desc.toLowerCase()===oldDesc.toLowerCase());
         const xym=monthKey(x.venc||x.fecha);
         if(!linked||xym<currentYM)return;
-        x.fijo=true;x.fijoId=fid;x.desc=newDesc;x.cat=newCat;x.monto=amount;
+        x.fijo=true;x.fijoId=fid;x.desc=newDesc;x.cat=newCat;x.monto=amount;x.fiscal=newFiscal;
         if(x.id!==m.id){
           x.tipo=fijo.tipo==='ingreso'?'medeben':'deuda';
           const d=safeDayForMonth(xym,day);x.venc=xym+'-'+String(d).padStart(2,'0');
@@ -1757,6 +1791,8 @@ let mTipo='gasto';
 function openVoice(){
   $('#speechTxt').value='';$('#preview').innerHTML='';$('#voiceForm').style.display='none';
   fillCats('#mCat',mTipo);
+  updateFiscalUI();
+  if($('#mFiscal'))$('#mFiscal').value='negro';
   $('#ovVoice').classList.add('show');
   setTimeout(()=>{try{$('#speechTxt').focus();}catch(e){}},60);
 }
@@ -1784,6 +1820,7 @@ function interpret(){
   $('#mDesc').value=r.desc;
   if(r.cat&&hasOption('#mCat',r.cat))$('#mCat').value=r.cat;
   $('#mVenc').value=(r.tipo==='deuda'||r.tipo==='medeben')?(r.venc||''):'';
+  if($('#mFiscal'))$('#mFiscal').value='negro';
   $('#voiceForm').style.display='block';
   const tlabel={ingreso:'Ingreso',gasto:'Gasto',deuda:'Deuda',medeben:'Me deben'}[r.tipo];
   let vtxt='';
@@ -1797,9 +1834,10 @@ function addVoice(){
   if(!monto||monto<=0){$('#mMonto').focus();return;}
   if(!desc){$('#mDesc').focus();return;}
   const cat=$('#mCat').value||(mTipo==='deuda'?'Deuda':mTipo==='medeben'?'Trabajo':mTipo==='ingreso'?'Changa':'Otro');
+  const fiscal=state.useFiscal?fiscalValue($('#mFiscal')?$('#mFiscal').value:'negro'):'negro';
   const m={id:id(),tipo:mTipo,monto,desc,cat,
     fecha:nowStamp(),venc:(mTipo==='deuda'||mTipo==='medeben')?($('#mVenc').value||''):'',
-    estado:(mTipo==='deuda'||mTipo==='medeben')?'impago':'pago',fijo:false};
+    estado:(mTipo==='deuda'||mTipo==='medeben')?'impago':'pago',fijo:false,fiscal};
   if(cat===EXCEDENTE_CAT||desc===EXCEDENTE_DESC){
     m.tipo='ingreso';m.estado='pago';m.venc='';m.fijo=false;m.autoExcedente=false;m.excedenteManual=true;
   }
@@ -1859,12 +1897,19 @@ function render(){
   const gas=movs.filter(isOutflow).reduce((s,m)=>s+m.monto,0);
   const bal=ing-gas;
   const restante=movs.filter(isPendingOutflow).reduce((s,m)=>s+m.monto,0);
+  const ingBlanco=movs.filter(m=>isIncome(m)&&isWhiteFiscal(m)).reduce((s,m)=>s+m.monto,0);
+  const gasBlanco=movs.filter(m=>isOutflow(m)&&isWhiteFiscal(m)).reduce((s,m)=>s+m.monto,0);
 
-  $('#cards').innerHTML=
+  let cardsHtml=
     '<div class="kpi ing"><div class="lab">Ingresos</div><div class="val">'+money(ing)+'</div></div>'+
     '<div class="kpi gas"><div class="lab">Salidas</div><div class="val">'+money(gas)+'</div></div>'+
     '<div class="kpi bal '+(bal>=0?'pos':'neg')+'"><div class="lab">Balance</div><div class="val">'+money(bal)+'</div></div>'+
     '<div class="kpi deb"><div class="lab">Falta pagar</div><div class="val">'+money(restante)+'</div></div>';
+  if(state.useFiscal){
+    cardsHtml += '<div class="kpi ing"><div class="lab">Cobrado en blanco</div><div class="val">'+money(ingBlanco)+'</div></div>' +
+                 '<div class="kpi gas"><div class="lab">Gastado en blanco</div><div class="val">'+money(gasBlanco)+'</div></div>';
+  }
+  $('#cards').innerHTML=cardsHtml;
 
   const pct=state.goalMin?Math.min(100,Math.round(ing/state.goalMin*100)):0;
   $('#goalBar').style.width=pct+'%';
@@ -1921,7 +1966,7 @@ function render(){
     if(m.tipo==='deuda')status='<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>';
     else if(m.tipo==='medeben')status='<button class="pill '+(m.estado==='pago'?'cobrado':'cobrar')+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Cobrado':'Cobrar')+'</button>';
     else if(m.tipo==='gasto')status='<span class="pill pago">Pagado</span>';
-    return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?IC.repeat:'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span>'+manualTag+' '+vtxt+'</div></div><div class="amt '+(inSide?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+status+'<button class="ico" onclick="openEdit(\''+m.id+'\')">'+IC.pencil+'</button><button class="ico" onclick="delMov(\''+m.id+'\')">'+IC.trash+'</button></div></div>';
+    return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?IC.repeat:'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span>'+fiscalTagHtml(m)+manualTag+' '+vtxt+'</div></div><div class="amt '+(inSide?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+status+'<button class="ico" onclick="openEdit(\''+m.id+'\')">'+IC.pencil+'</button><button class="ico" onclick="delMov(\''+m.id+'\')">'+IC.trash+'</button></div></div>';
   }).join(''):'<div style="padding:30px;text-align:center;color:var(--muted);font-weight:700">Sin movimientos este mes. Cargá uno arriba</div>';
 }
 
@@ -2098,9 +2143,9 @@ function dayDetail(isoD){
     if(m.tipo==='deuda')status='<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\');dayDetail(\''+isoD+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>';
     else if(m.tipo==='medeben')status='<button class="pill '+(m.estado==='pago'?'cobrado':'cobrar')+'" onclick="togglePago(\''+m.id+'\');dayDetail(\''+isoD+'\')">'+(m.estado==='pago'?'Cobrado':'Cobrar')+'</button>';
     else if(m.tipo==='gasto')status='<span class="pill pago">Pagado</span>';
-    let meta=m.cat+(isManualExcedente(m)?' · Manual':'')+' · Cargado '+fmtDMTime(m.fecha);
-    if(m.tipo==='deuda'&&m.venc)meta=m.cat+' · Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha);
-    else if(m.tipo==='medeben'&&m.venc)meta=m.cat+' · Cobro '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha);
+    let meta=m.cat+(state.useFiscal?' · '+fiscalLabel(m.fiscal):'')+(isManualExcedente(m)?' · Manual':'')+' · Cargado '+fmtDMTime(m.fecha);
+    if(m.tipo==='deuda'&&m.venc)meta=m.cat+(state.useFiscal?' · '+fiscalLabel(m.fiscal):'')+' · Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha);
+    else if(m.tipo==='medeben'&&m.venc)meta=m.cat+(state.useFiscal?' · '+fiscalLabel(m.fiscal):'')+' · Cobro '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha);
     return '<div class="dayrow"><span class="dot '+m.tipo+'"></span><div style="flex:1"><div style="font-weight:800">'+m.desc+'</div><div class="sub">'+meta+'</div></div><div class="amt '+(inSide?'in':'out')+'" style="font-weight:900">'+(inSide?'+':'−')+money(m.monto)+'</div>'+status+'</div>';
   }).join(''):'<div class="sub">Sin movimientos este día.</div>';
   $('#ovDay').classList.add('show');
@@ -2120,8 +2165,8 @@ function restore(e){
 }
 function exportCSV(){
   const ym=$('#monthSel').value;
-  const rows=[['Tipo','Monto','Descripcion','Categoria','Fecha y hora','Vencimiento','Estado']];
-  state.movs.filter(m=>monthKey(m.venc||m.fecha)===ym).forEach(m=>rows.push([m.tipo,m.monto,m.desc,m.cat,m.fecha,m.venc,m.estado]));
+  const rows=[['Tipo','Monto','Descripcion','Categoria','Facturacion','Fecha y hora','Vencimiento','Estado']];
+  state.movs.filter(m=>monthKey(m.venc||m.fecha)===ym).forEach(m=>rows.push([m.tipo,m.monto,m.desc,m.cat,fiscalLabel(m.fiscal),m.fecha,m.venc,m.estado]));
   const csv=rows.map(r=>r.map(c=>'"'+c+'"').join(',')).join('\n');
   const blob=new Blob(['\ufeff'+csv],{type:'text/csv'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
@@ -2132,6 +2177,7 @@ function wipe(){localStorage.removeItem(KEY);state=seed();buildMonths();render()
 /* ============ INIT ============ */
 ensureCats();migrate();cleanV3();noSeguro();hist2();let initChanged=false;if(ensureDateTimes())initChanged=true;if(zeroExcedentesThroughJune2026())initChanged=true;if(initChanged)save();
 fillCats('#fCat','ingreso');
+updateFiscalUI();
 applyTheme();
 buildMonths();
 setTipo('gasto');
@@ -2141,6 +2187,7 @@ if(cloudUrl){cloudPull(()=>{buildMonths();render();});}
 
 initMoneyInputs();
 initModalCloseButtons();
+updateFiscalUI();
 </script>
 </body>
 </html>
