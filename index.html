@@ -7,7 +7,11 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNBNkUwNEIiLz48c3RvcCBvZmZzZXQ9IjAuNTUiIHN0b3AtY29sb3I9IiMyODVGQ0QiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM4QTUxRUIiLz4KPC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSIzMCIgaGVpZ2h0PSIzMCIgcng9IjgiIGZpbGw9InVybCgjZykiLz4KPHRleHQgeD0iMTYiIHk9IjIzLjUiIGZvbnQtZmFtaWx5PSJBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMSIgZm9udC13ZWlnaHQ9IjkwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiI+JDwvdGV4dD4KPC9zdmc+">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+<style id="pixel-fonts">
+/* === Fuentes pixel embebidas (tema Windows): Pixelify Sans + VT323 === */
+@font-face{font-family:'Pixelify Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url(data:font/woff2;base64,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) format('woff2');}
+@font-face{font-family:'VT323';font-style:normal;font-weight:400;font-display:swap;src:url(data:font/woff2;base64,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) format('woff2');}
+</style>
 <style>
 :root{
   --r:18px;
@@ -15,7 +19,7 @@
   --glass:rgba(255,255,255,.55); --glass2:rgba(255,255,255,.78);
   --line:rgba(70,80,140,.16);
   --shadow:0 10px 34px rgba(40,50,110,.12);
-  --c-ing:#0c9d6b; --c-gas:#e0457b; --c-deb:#7c4dff;
+  --c-ing:#0c9d6b; --c-gas:#e0457b; --c-deb:#7c4dff; --c-md:#0aa5c4;
   --accent:#0aa5c4; --accent2:#7c4dff; --azul:#2f6bff;
   --rojo:#e0457b; --naranja:#e4733b; --amar:#b07d0a; --ok:#0c9d6b; --c-warn:#b07d0a;
   --blur:saturate(150%) blur(16px);
@@ -34,7 +38,7 @@ body.dark{
   --glass:rgba(255,255,255,.07); --glass2:rgba(255,255,255,.11);
   --line:rgba(255,255,255,.14);
   --shadow:0 12px 40px rgba(0,0,0,.45);
-  --c-ing:#34d399; --c-gas:#fb7185; --c-deb:#c08bff;
+  --c-ing:#34d399; --c-gas:#fb7185; --c-deb:#c08bff; --c-md:#22d3ee;
   --accent:#22d3ee; --accent2:#a78bfa; --azul:#6aa8ff;
   --rojo:#fb7185; --naranja:#fb923c; --amar:#fbbf24; --ok:#34d399; --c-warn:#fbbf24;
 }
@@ -91,9 +95,9 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:14p
 .catbtn:hover{border-color:var(--accent);color:var(--txt)}
 .badge{background:var(--rojo);color:#fff;border-radius:99px;padding:1px 9px;font-size:.78rem;font-weight:900}
 .al{display:flex;justify-content:space-between;align-items:center;gap:10px;border-radius:14px;padding:11px 14px;margin-bottom:8px;border-left:4px solid var(--line)}
-.al.r{border-left-color:var(--rojo)}.al.o{border-left-color:var(--naranja)}.al.y{border-left-color:var(--amar)}
+.al.r{border-left-color:var(--rojo)}.al.o{border-left-color:var(--naranja)}.al.y{border-left-color:var(--amar)}.al.g{border-left-color:var(--ok)}
 .al .desc{font-weight:800}.al .when{font-size:.78rem;font-weight:800}
-.al.r .when{color:var(--rojo)}.al.o .when{color:var(--naranja)}.al.y .when{color:var(--c-warn)}
+.al.r .when{color:var(--rojo)}.al.o .when{color:var(--naranja)}.al.y .when{color:var(--c-warn)}.al.g .when{color:var(--ok)}
 .al .amt{font-weight:900;white-space:nowrap}
 .al button{background:var(--ok);color:#063;padding:7px 12px;font-size:.82rem}
 body.dark .al button{color:#04231a}
@@ -103,15 +107,21 @@ body.dark .al button{color:#04231a}
 
 .add{border-radius:var(--r);padding:16px;margin-bottom:16px}
 .tabs{display:flex;gap:8px;margin-bottom:14px}
-.tabs button{flex:1;padding:11px;background:var(--glass2);color:var(--muted);border:1px solid var(--line);font-size:.95rem}
+.tabs button{flex:1;min-width:0;padding:10px 6px;background:var(--glass2);color:var(--muted);border:1px solid var(--line);font-size:.88rem;white-space:nowrap}
+.tabs button .ic{width:16px;height:16px}
 .tabs button.on[data-t=ingreso]{background:var(--c-ing);color:#042;border-color:transparent}
 .tabs button.on[data-t=gasto]{background:var(--c-gas);color:#fff;border-color:transparent}
 .tabs button.on[data-t=deuda]{background:var(--c-deb);color:#fff;border-color:transparent}
+.tabs button.on[data-t=medeben]{background:var(--c-md);color:#fff;border-color:transparent}
 .formgrid{display:grid;grid-template-columns:1.1fr 2fr 1.2fr;gap:12px;align-items:end}
 .venc-wrap{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-top:12px}
 .bigadd{background:linear-gradient(120deg,var(--accent),var(--accent2));color:#fff;padding:13px 22px;font-size:1rem;width:100%}
 .fijo-chk{display:flex;align-items:center;gap:7px;font-weight:800;color:var(--muted);font-size:.85rem;cursor:pointer;user-select:none}
 .fijo-chk input{width:auto}
+.fecha-wrap{margin-top:12px;max-width:320px}
+.opts-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px}
+.opts-panel{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end;margin-top:10px;padding:12px;border:1px dashed var(--line);border-radius:12px}
+.opts-hint{align-self:center;font-size:.78rem;line-height:1.35}
 
 .list{border-radius:var(--r);overflow:hidden}
 .lh{padding:13px 16px;font-weight:900;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
@@ -120,7 +130,7 @@ body.dark .al button{color:#04231a}
 .item{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:none}
 .dot{width:10px;height:10px;border-radius:50%;flex:none}
-.dot.ingreso{background:var(--c-ing)}.dot.gasto{background:var(--c-gas)}.dot.deuda{background:var(--c-deb)}
+.dot.ingreso{background:var(--c-ing)}.dot.gasto{background:var(--c-gas)}.dot.deuda{background:var(--c-deb)}.dot.medeben{background:var(--c-md)}
 .item .d1{font-weight:800;line-height:1.2;display:flex;align-items:center;gap:6px}
 .item .d2{font-size:.74rem;color:var(--muted);font-weight:700;margin-top:2px}
 .item .amt{font-weight:900;white-space:nowrap}
@@ -129,6 +139,8 @@ body.dark .al button{color:#04231a}
 .pill{font-size:.7rem;font-weight:900;padding:5px 10px;border-radius:99px;border:1px solid transparent;white-space:nowrap}
 .pill.pago{background:rgba(12,157,107,.16);color:var(--ok)}
 .pill.impago{background:rgba(224,69,123,.16);color:var(--rojo)}
+.pill.cobrado{background:rgba(12,157,107,.16);color:var(--ok)}
+.pill.cobrar{background:rgba(10,165,196,.16);color:var(--c-md)}
 .ico{background:var(--glass2);color:var(--muted);width:32px;height:32px;border-radius:10px;border:1px solid var(--line)}
 .ico:hover{color:var(--txt);border-color:var(--accent)}
 .cat-tag{font-size:.68rem;font-weight:800;background:var(--glass2);color:var(--muted);padding:2px 8px;border-radius:99px;border:1px solid var(--line)}
@@ -143,7 +155,7 @@ body.dark .al button{color:#04231a}
 .cc.today .cnum{color:var(--accent)}
 .cdots{display:flex;gap:3px;flex-wrap:wrap}
 .cdot{width:7px;height:7px;border-radius:50%}
-.cdot.ingreso{background:var(--c-ing)}.cdot.gasto{background:var(--c-gas)}.cdot.deuda{background:var(--c-deb)}
+.cdot.ingreso{background:var(--c-ing)}.cdot.gasto{background:var(--c-gas)}.cdot.deuda{background:var(--c-deb)}.cdot.medeben{background:var(--c-md)}
 .cdot.od{background:var(--rojo);box-shadow:0 0 0 2px rgba(224,69,123,.4)}
 .cdue{font-size:.62rem;font-weight:800;color:var(--c-gas);margin-top:auto;line-height:1}
 .calleg{display:flex;gap:14px;flex-wrap:wrap;padding:0 16px 14px;font-size:.72rem;font-weight:700;color:var(--muted)}
@@ -192,6 +204,16 @@ footer button:hover{color:var(--txt);border-color:var(--accent)}
   .acts{grid-column:1/-1;justify-content:flex-end}
   .cc{min-height:50px;padding:4px}.cdue{font-size:.55rem}
   .mstats{grid-template-columns:1fr}
+  .thememenu{left:0;right:auto;max-width:calc(100vw - 24px)}
+}
+@media(max-width:560px){
+  .tabs{flex-wrap:wrap}
+  .tabs button{flex:1 1 calc(50% - 4px);font-size:.85rem;padding:10px 4px}
+  .opts-panel{grid-template-columns:1fr}
+  .opts-row{gap:10px}
+  .lh .row{width:100%}
+  .vbtn{flex:1;padding:8px 4px;font-size:.78rem;justify-content:center}
+  .vbtn .ic{width:15px;height:15px}
 }
 
 /* ===== SELECTOR DE TEMAS ===== */
@@ -231,10 +253,10 @@ body.win{
   --rojo:#c00000; --naranja:#c00000; --amar:#b00000; --ok:#00a800; --c-warn:#b00000;
   --blur:none;
 }
-body.win, body.win input, body.win select, body.win textarea, body.win button{ font-family:'Pixelify Sans','MS Sans Serif',Tahoma,sans-serif !important; }
+body.win, body.win *{ font-family:'Pixelify Sans','MS Sans Serif',Tahoma,sans-serif !important; }
 body.win *{ border-radius:0 !important; }
-/* números en mono/terminal */
-body.win .kpi .val, body.win .item .amt, body.win .al .amt, body.win .mstat .v, body.win .cnum, body.win .goalTxt{ font-family:'VT323','Courier New',monospace !important; }
+/* números/montos en mono/terminal */
+body.win .kpi .val, body.win .item .amt, body.win .al .amt, body.win .mstat .v, body.win .cnum, body.win .goalTxt, body.win .cdue, body.win #goalTxt, body.win .catrow .top span:last-child{ font-family:'VT323','Courier New',monospace !important; letter-spacing:.5px; }
 /* escritorio dithered */
 body.win::before{
   background-color:#aaaaaa !important;
@@ -290,6 +312,24 @@ body.win .fab-mic.live{ background:#c00000 !important; color:#fff !important; }
 /* foco general */
 body.win input:focus, body.win select:focus, body.win textarea:focus{ outline:none; }
 
+/* ---- acentos del manual de marca (cada "ventana" con su color) ---- */
+body.win{ --c-md:#00aaaa; }
+body.win .kpi.ing{ border-top:5px solid #A6E04B !important; }   /* verde marca */
+body.win .kpi.gas{ border-top:5px solid #8A51EB !important; }   /* violeta marca */
+body.win .kpi.bal{ border-top:5px solid #285FCD !important; }   /* azul marca */
+body.win .kpi.deb{ border-top:5px solid #c00000 !important; }
+body.win .add{ border-top:5px solid #285FCD !important; }       /* azul marca */
+body.win .goal{ border-top:5px solid #A6E04B !important; }      /* verde marca */
+body.win .list{ border-top:5px solid #8A51EB !important; }      /* violeta marca */
+body.win .alerts .alert-head.toggle{ border-top:4px solid #c00000 !important; }
+body.win .modal{ border-top:5px solid #285FCD !important; }
+/* Me deben en tema Windows = cian EGA */
+body.win .tabs button.on[data-t=medeben]{ background:#00aaaa !important; color:#fff !important; box-shadow:inset 1.5px 1.5px 0 #55ffff, inset -1.5px -1.5px 0 #000 !important; }
+body.win .dot.medeben, body.win .cdot.medeben{ background:#00aaaa !important; }
+body.win .pill.cobrar{ background:#fff !important; color:#00aaaa !important; }
+body.win .pill.cobrado{ background:#fff !important; color:#00a800 !important; }
+body.win .al.g button{ background:#00a800 !important; color:#fff !important; }
+
 </style>
 </head>
 <body>
@@ -330,6 +370,7 @@ body.win input:focus, body.win select:focus, body.win textarea:focus{ outline:no
     <button data-t="ingreso" class="on" onclick="setTipo('ingreso')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Ingreso</button>
     <button data-t="gasto" onclick="setTipo('gasto')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg> Gasto</button>
     <button data-t="deuda" onclick="setTipo('deuda')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> Deuda</button>
+    <button data-t="medeben" onclick="setTipo('medeben')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg> Me deben</button>
   </div>
   <div class="formgrid">
     <div><label>Monto $</label><input id="fMonto" type="number" inputmode="numeric" placeholder="0" onkeydown="if(event.key==='Enter')addMov()"></div>
@@ -343,15 +384,28 @@ body.win input:focus, body.win select:focus, body.win textarea:focus{ outline:no
       </div>
     </div>
   </div>
-  <div class="venc-wrap" id="vencWrap">
-    <div><label>Vencimiento</label><input id="fVenc" type="date"></div>
-    <div style="display:flex;align-items:center;height:44px">
-      <label class="fijo-chk"><input type="checkbox" id="fFijo"> Gasto fijo (se repite cada mes)</label>
-    </div>
-    <div><button class="bigadd" onclick="addMov()">Agregar</button></div>
+
+  <div class="fecha-wrap" id="fechaWrap" style="display:none">
+    <div><label id="fechaLbl">Vencimiento</label><input id="fVenc" type="date"></div>
   </div>
-  <div id="addOnlyBtn" style="margin-top:12px;display:none"><button class="bigadd" onclick="addMov()">Agregar ingreso</button></div>
+
+  <div class="opts-row">
+    <label class="fijo-chk"><input type="checkbox" id="fRepeat" onchange="toggleOpts('repeat')"> 🔁 Repetir todos los meses</label>
+    <label class="fijo-chk"><input type="checkbox" id="fCuotas" onchange="toggleOpts('cuotas')"> 🧾 En cuotas</label>
+  </div>
+  <div class="opts-panel" id="repeatPanel" style="display:none">
+    <div><label>Día del mes</label><input id="fRepeatDay" type="number" min="1" max="31" placeholder="10"></div>
+    <div class="opts-hint sub" id="repeatHint">Se va a generar solo cada mes.</div>
+  </div>
+  <div class="opts-panel" id="cuotasPanel" style="display:none">
+    <div><label>N° de cuotas</label><input id="fCuotasN" type="number" min="2" max="60" placeholder="3"></div>
+    <div><label id="cuotasStartLbl">Primera cuota</label><input id="fCuotasStart" type="date"></div>
+    <div class="opts-hint sub" id="cuotasHint" style="grid-column:1/-1">El monto se divide en partes iguales, una por mes.</div>
+  </div>
+
+  <button class="bigadd" id="bigAddBtn" style="margin-top:14px" onclick="addMov()">Agregar</button>
 </div>
+
 
 <div class="list">
   <div class="lh">
@@ -412,7 +466,8 @@ body.win input:focus, body.win select:focus, body.win textarea:focus{ outline:no
     <textarea id="speechTxt" placeholder='Tocá el micrófono y decí algo como:
 "Pagué treinta y un mil de luz"
 "Debo treinta y un mil de luz, vence el 15"
-"Cobré una changa de ochenta mil"'></textarea>
+"Cobré una changa de ochenta mil"
+"Me deben 150 mil del trabajo, me pagan el 28"'></textarea>
     <div class="row" style="margin-top:10px">
       <button id="micBtn" class="micbtn" onclick="toggleMic()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg> Hablar</button>
       <button class="interpbtn" onclick="interpret()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.8L18.5 9l-4.9 1.2L12 15l-1.6-4.8L5.5 9l4.9-1.2z"/><path d="M19 14l.7 2.1L22 17l-2.3.9L19 20l-.7-2.1L16 17z"/></svg> Interpretar</button>
@@ -423,6 +478,7 @@ body.win input:focus, body.win select:focus, body.win textarea:focus{ outline:no
         <button data-t="ingreso" onclick="setMTipo('ingreso')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Ingreso</button>
         <button data-t="gasto" onclick="setMTipo('gasto')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg> Gasto</button>
         <button data-t="deuda" onclick="setMTipo('deuda')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg> Deuda</button>
+        <button data-t="medeben" onclick="setMTipo('medeben')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg> Me deben</button>
       </div>
       <div class="g">
         <div class="mrow">
@@ -430,7 +486,7 @@ body.win input:focus, body.win select:focus, body.win textarea:focus{ outline:no
           <div><label>Categoría</label><select id="mCat"></select></div>
         </div>
         <div><label>Descripción</label><input id="mDesc"></div>
-        <div id="mVencWrap"><label>Vencimiento</label><input id="mVenc" type="date"></div>
+        <div id="mVencWrap"><label id="mVencLbl">Vencimiento</label><input id="mVenc" type="date"></div>
         <button class="save" onclick="addVoice()"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Agregar</button>
       </div>
     </div>
@@ -455,7 +511,7 @@ body.win input:focus, body.win select:focus, body.win textarea:focus{ outline:no
       <div class="mrow">
         <div><label>Monto $</label><input id="eMonto" type="number"></div>
         <div><label>Tipo</label><select id="eTipo" onchange="setEditTipo(this.value)">
-          <option value="ingreso">Ingreso</option><option value="gasto">Gasto</option><option value="deuda">Deuda</option>
+          <option value="ingreso">Ingreso</option><option value="gasto">Gasto</option><option value="deuda">Deuda</option><option value="medeben">Me deben</option>
         </select></div>
       </div>
       <div><label>Descripción</label><input id="eDesc"></div>
@@ -1013,10 +1069,12 @@ function ensureFijos(ym){
   if(ym<todayYM())return false; // nunca inventar cuentas de meses ya pasados
   let changed=false;
   (state.fijos||[]).forEach(f=>{
+    const ft=f.tipo||'gasto';
+    const genTipo=ft==='ingreso'?'medeben':'deuda';
     const exists=state.movs.some(x=>x.fijo&&x.desc.toLowerCase()===f.desc.toLowerCase()&&monthKey(x.venc||x.fecha)===ym);
     if(!exists){
       const dd=String(f.dia).padStart(2,'0');
-      state.movs.push({id:id(),tipo:'deuda',monto:f.monto,desc:f.desc,cat:f.cat,
+      state.movs.push({id:id(),tipo:genTipo,monto:f.monto,desc:f.desc,cat:f.cat,
         fecha:ym+'-01 00:00:00',venc:ym+'-'+dd,estado:'impago',fijo:true});
       changed=true;
     }
@@ -1024,6 +1082,27 @@ function ensureFijos(ym){
   return changed;
 }
 function monthKey(d){return d?d.slice(0,7):''}
+
+/* ===== clasificación de movimientos (incluye "Me deben") ===== */
+function isIncome(m){return m.tipo==='ingreso'||(m.tipo==='medeben'&&m.estado==='pago');}
+function isOutflow(m){return m.tipo==='gasto'||m.tipo==='deuda';}
+function isReceivablePending(m){return m.tipo==='medeben'&&m.estado!=='pago';}
+function incomeSide(m){return m.tipo==='ingreso'||m.tipo==='medeben';}
+function addMonthsISO(isoD,delta){
+  const p=dateOnly(isoD).split('-').map(Number);
+  const day=p[2]||1;
+  const d=new Date(p[0],(p[1]-1)+delta,1);
+  const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+  d.setDate(Math.min(day,last));
+  return iso(d);
+}
+function autoAcreditarMeDeben(){
+  let changed=false;const t=todayISO();
+  state.movs.forEach(m=>{
+    if(m.tipo==='medeben'&&m.estado!=='pago'&&m.venc&&dateOnly(m.venc)<=t){m.estado='pago';changed=true;}
+  });
+  return changed;
+}
 
 /* ============ HELPERS ============ */
 const $=s=>document.querySelector(s);
@@ -1165,7 +1244,7 @@ function getCats(){ensureCats();return state.cats}
 function catsForTipo(t){const cats=getCats();return t==='deuda'?cats:cats.filter(c=>c!=='Gasto Fijo')}
 function fillCats(sel,t){$(sel).innerHTML=catsForTipo(t||'gasto').map(c=>'<option>'+esc(c)+'</option>').join('')}
 function hasOption(sel,val){return [...$(sel).options].some(o=>o.value===val)}
-function defaultCat(t){return t==='deuda'?'Deuda':(t==='ingreso'?'Sueldo':'Comida')}
+function defaultCat(t){return t==='deuda'?'Deuda':t==='medeben'?'Trabajo':t==='ingreso'?'Sueldo':'Comida'}
 function setSelectDefault(sel,t,prefer){
   const el=$(sel); const wanted=prefer||defaultCat(t);
   if(hasOption(sel,wanted))el.value=wanted;
@@ -1234,11 +1313,21 @@ function setTipo(t){
   tipo=t;
   document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
   fillCats('#fCat',t);
-  $('#vencWrap').style.display = t==='deuda'?'grid':'none';
-  $('#addOnlyBtn').style.display = t==='deuda'?'none':'block';
-  const quickBtn=$('#addOnlyBtn .bigadd');
-  if(quickBtn)quickBtn.textContent=t==='gasto'?'Agregar gasto':'Agregar ingreso';
+  const showFecha=(t==='deuda'||t==='medeben');
+  $('#fechaWrap').style.display=showFecha?'block':'none';
+  $('#fechaLbl').textContent=t==='medeben'?'Fecha de cobro / límite':'Vencimiento';
+  $('#bigAddBtn').textContent=({ingreso:'Agregar ingreso',gasto:'Agregar gasto',deuda:'Agregar deuda',medeben:'Agregar «me deben»'})[t]||'Agregar';
   setSelectDefault('#fCat',t);
+  toggleOpts();
+}
+function toggleOpts(src){
+  const rep=$('#fRepeat'),cuo=$('#fCuotas');
+  if(src==='repeat'&&rep&&rep.checked&&cuo)cuo.checked=false;
+  if(src==='cuotas'&&cuo&&cuo.checked&&rep)rep.checked=false;
+  if($('#repeatPanel'))$('#repeatPanel').style.display=rep&&rep.checked?'grid':'none';
+  if($('#cuotasPanel'))$('#cuotasPanel').style.display=cuo&&cuo.checked?'grid':'none';
+  const cl=$('#cuotasStartLbl');
+  if(cl)cl.textContent=(tipo==='ingreso'||tipo==='medeben')?'Primer cobro':'Primera cuota';
 }
 function autoCat(){
   const c=detectCat($('#fDesc').value);
@@ -1262,24 +1351,49 @@ function addMov(){
   if(!monto||monto<=0){$('#fMonto').focus();return}
   if(!desc){$('#fDesc').focus();return}
   const cat=$('#fCat').value||defaultCat(tipo);
-  const m={id:id(),tipo,monto,desc,cat,
-    fecha:nowStamp(),
-    venc:tipo==='deuda'?($('#fVenc').value||''):'',
-    estado:tipo==='deuda'?'impago':'pago',
-    fijo:tipo==='deuda'&&$('#fFijo').checked};
-  if(cat===EXCEDENTE_CAT||desc===EXCEDENTE_DESC){
-    m.tipo='ingreso';m.estado='pago';m.venc='';m.fijo=false;m.autoExcedente=false;m.excedenteManual=true;
-  }
-  state.movs.push(m);
-  if(m.fijo){
-    const dia=m.venc?parseInt(m.venc.slice(8,10)):10;
-    if(!state.fijos.some(f=>f.desc.toLowerCase()===desc.toLowerCase()))
-      state.fijos.push({desc,cat:m.cat,monto,dia});
+  const t=tipo;
+  const income=(t==='ingreso'||t==='medeben');
+  const repeat=$('#fRepeat')&&$('#fRepeat').checked;
+  const cuotas=$('#fCuotas')&&$('#fCuotas').checked;
+  const fechaInput=$('#fVenc')?$('#fVenc').value:'';
+  const esExcedente=(cat===EXCEDENTE_CAT||desc===EXCEDENTE_DESC);
+  let jumpYM=null;
+
+  if(cuotas && !esExcedente){
+    const n=parseInt($('#fCuotasN').value)||0;
+    if(n<2){$('#fCuotasN').focus();return;}
+    const start=$('#fCuotasStart').value||fechaInput||todayISO();
+    const per=Math.round(monto/n);
+    const genTipo=income?'medeben':'deuda';
+    for(let i=0;i<n;i++){
+      const fch=addMonthsISO(start,i);
+      state.movs.push({id:id(),tipo:genTipo,monto:per,desc:desc+' ('+(i+1)+'/'+n+')',cat,
+        fecha:nowStamp(),venc:fch,estado:'impago',fijo:false,cuota:true});
+    }
+    jumpYM=monthKey(start);
+  } else {
+    const m={id:id(),tipo:t,monto,desc,cat,fecha:nowStamp(),
+      venc:(t==='deuda'||t==='medeben')?(fechaInput||''):'',
+      estado:(t==='deuda'||t==='medeben')?'impago':'pago',
+      fijo:!!repeat};
+    if(esExcedente){m.tipo='ingreso';m.estado='pago';m.venc='';m.fijo=false;m.autoExcedente=false;m.excedenteManual=true;}
+    state.movs.push(m);
+    jumpYM=monthKey(m.venc||m.fecha);
+    if(repeat && !esExcedente){
+      const dia=$('#fRepeatDay').value?parseInt($('#fRepeatDay').value):(m.venc?parseInt(m.venc.slice(8,10)):new Date().getDate());
+      const ftipo=income?'ingreso':'gasto';
+      const exist=state.fijos.find(f=>f.desc.toLowerCase()===desc.toLowerCase());
+      if(exist){exist.tipo=ftipo;exist.cat=cat;exist.monto=monto;exist.dia=dia;}
+      else state.fijos.push({tipo:ftipo,desc,cat,monto,dia});
+    }
   }
   save();
-  $('#fMonto').value='';$('#fDesc').value='';$('#fVenc').value='';$('#fFijo').checked=false;
+  $('#fMonto').value='';$('#fDesc').value='';if($('#fVenc'))$('#fVenc').value='';
+  if($('#fRepeat'))$('#fRepeat').checked=false;if($('#fCuotas'))$('#fCuotas').checked=false;
+  if($('#fRepeatDay'))$('#fRepeatDay').value='';if($('#fCuotasN'))$('#fCuotasN').value='';if($('#fCuotasStart'))$('#fCuotasStart').value='';
+  toggleOpts();
   $('#preview').innerHTML='';$('#speechTxt').value='';
-  buildMonths();$('#monthSel').value=monthKey(m.venc||m.fecha);
+  buildMonths();if(jumpYM)$('#monthSel').value=jumpYM;
   render();$('#fMonto').focus();
 }
 
@@ -1297,7 +1411,7 @@ function setEditTipo(t){
   fillCats('#eCat',t);
   if(hasOption('#eCat',prev))$('#eCat').value=prev;
   else setSelectDefault('#eCat',t);
-  $('#eVencWrap').style.display=t==='deuda'?'block':'none';
+  $('#eVencWrap').style.display=(t==='deuda'||t==='medeben')?'block':'none';
 }
 function openEdit(mid){
   editId=mid;const m=state.movs.find(x=>x.id===mid);
@@ -1306,7 +1420,7 @@ function openEdit(mid){
   if(hasOption('#eCat',m.cat))$('#eCat').value=m.cat;
   else setSelectDefault('#eCat',m.tipo);
   $('#eVenc').value=dateOnly(m.venc||'');
-  $('#eVencWrap').style.display=m.tipo==='deuda'?'block':'none';
+  $('#eVencWrap').style.display=(m.tipo==='deuda'||m.tipo==='medeben')?'block':'none';
   $('#ov').classList.add('show');
 }
 function saveEdit(){
@@ -1314,9 +1428,9 @@ function saveEdit(){
   const oldTipo=m.tipo;
   const wasExcedente=isExcedente(m);
   m.monto=parseFloat($('#eMonto').value)||0;m.tipo=$('#eTipo').value;
-  m.desc=$('#eDesc').value.trim();m.cat=$('#eCat').value||defaultCat(m.tipo);m.venc=m.tipo==='deuda'?$('#eVenc').value:'';
-  if(m.tipo!=='deuda'){m.estado='pago';m.fijo=false;}
-  else if(oldTipo!=='deuda'&&m.estado==='pago'){m.estado='impago';}
+  m.desc=$('#eDesc').value.trim();m.cat=$('#eCat').value||defaultCat(m.tipo);m.venc=(m.tipo==='deuda'||m.tipo==='medeben')?$('#eVenc').value:'';
+  if(m.tipo==='ingreso'||m.tipo==='gasto'){m.estado='pago';m.fijo=false;}
+  else if((oldTipo==='ingreso'||oldTipo==='gasto')){m.estado='impago';}
   if(wasExcedente||m.cat===EXCEDENTE_CAT||m.desc===EXCEDENTE_DESC){
     m.autoExcedente=false;
     m.excedenteManual=true;
@@ -1424,14 +1538,16 @@ function extractVenc(t,ym){
 function parseMovement(raw){
   if(!raw||!raw.trim())return null;
   const t=' '+raw.toLowerCase().replace(/[.,;]/g,' ').replace(/\s+/g,' ').trim()+' ';
+  const MED=['me deben','me debe','me tienen que pagar','me tiene que pagar','me van a pagar','me va a pagar','me adeudan','me queda por cobrar','tengo que cobrar','voy a cobrar','quedaron de pagarme','por cobrar'];
   const ING=['cobré','cobre','cobra','entró','entro','gané','gane','vendí','vendi','venta','vendido','sueldo','recibí','recibi','ingreso','changa','aguinaldo','deposit'];
   const DEU=['debo','deuda','cuota','cuotas','tarjeta','préstamo','prestamo','crédito','credito','financi'];
   let tp='gasto';
-  if(ING.some(w=>t.includes(' '+w)))tp='ingreso';
+  if(MED.some(w=>t.includes(' '+w)))tp='medeben';
+  else if(ING.some(w=>t.includes(' '+w)))tp='ingreso';
   else if(DEU.some(w=>t.includes(w)))tp='deuda';
   const monto=extractAmount(t);
-  const venc=tp==='deuda'?extractVenc(t,$('#monthSel').value||todayYM()):'';
-  const cat=detectCat(t)||(tp==='ingreso'?'Changa':tp==='deuda'?'Deuda':'Otro');
+  const venc=(tp==='deuda'||tp==='medeben')?extractVenc(t,$('#monthSel').value||todayYM()):'';
+  const cat=detectCat(t)||(tp==='ingreso'?'Changa':tp==='deuda'?'Deuda':tp==='medeben'?'Trabajo':'Otro');
   let desc=extractDesc(raw);
   if(!desc)desc=cat!=='Otro'?cat:'Movimiento';
   return {tipo:tp,monto,desc,cat,venc};
@@ -1452,24 +1568,27 @@ function setMTipo(t){
   fillCats('#mCat',t);
   if(hasOption('#mCat',prev))$('#mCat').value=prev;
   else setSelectDefault('#mCat',t);
-  $('#mVencWrap').style.display=t==='deuda'?'block':'none';
+  $('#mVencWrap').style.display=(t==='deuda'||t==='medeben')?'block':'none';
+  const ml=$('#mVencLbl');if(ml)ml.textContent=t==='medeben'?'Fecha de cobro / límite':'Vencimiento';
 }
 function interpret(){
   const raw=$('#speechTxt').value;
   const r=parseMovement(raw);
   if(!r||!r.monto){
     $('#voiceForm').style.display='none';
-    $('#preview').innerHTML='<div class="pv warn">No pude detectar un monto. Probá: <b>"pagué 30 mil de luz"</b>, <b>"debo 30 mil de luz vence el 15"</b> o <b>"cobré ochenta mil de una changa"</b>.</div>';
+    $('#preview').innerHTML='<div class="pv warn">No pude detectar un monto. Probá: <b>"pagué 30 mil de luz"</b>, <b>"debo 30 mil de luz vence el 15"</b>, <b>"cobré ochenta mil de una changa"</b> o <b>"me deben 150 mil del trabajo, me pagan el 28"</b>.</div>';
     return;
   }
   setMTipo(r.tipo);
   $('#mMonto').value=r.monto;
   $('#mDesc').value=r.desc;
   if(r.cat&&hasOption('#mCat',r.cat))$('#mCat').value=r.cat;
-  $('#mVenc').value=(r.tipo==='deuda')?(r.venc||''):'';
+  $('#mVenc').value=(r.tipo==='deuda'||r.tipo==='medeben')?(r.venc||''):'';
   $('#voiceForm').style.display='block';
-  const tlabel={ingreso:'Ingreso',gasto:'Gasto',deuda:'Deuda'}[r.tipo];
-  const vtxt=(r.tipo==='deuda'&&r.venc)?(' · vence '+fmtDM(r.venc)) : '';
+  const tlabel={ingreso:'Ingreso',gasto:'Gasto',deuda:'Deuda',medeben:'Me deben'}[r.tipo];
+  let vtxt='';
+  if(r.tipo==='deuda'&&r.venc)vtxt=' · vence '+fmtDM(r.venc);
+  else if(r.tipo==='medeben'&&r.venc)vtxt=' · cobro '+fmtDM(r.venc);
   $('#preview').innerHTML='<div class="pv ok">Entendí: <b>'+tlabel+'</b> · <b>'+money(r.monto)+'</b> · '+r.desc+' <span class="cat-tag">'+r.cat+'</span>'+vtxt+'<br><span class="sub">Revisá y tocá <b>Agregar</b></span></div>';
 }
 function addVoice(){
@@ -1477,10 +1596,10 @@ function addVoice(){
   const desc=$('#mDesc').value.trim();
   if(!monto||monto<=0){$('#mMonto').focus();return;}
   if(!desc){$('#mDesc').focus();return;}
-  const cat=$('#mCat').value||(mTipo==='deuda'?'Deuda':(mTipo==='ingreso'?'Changa':'Otro'));
+  const cat=$('#mCat').value||(mTipo==='deuda'?'Deuda':mTipo==='medeben'?'Trabajo':mTipo==='ingreso'?'Changa':'Otro');
   const m={id:id(),tipo:mTipo,monto,desc,cat,
-    fecha:nowStamp(),venc:mTipo==='deuda'?($('#mVenc').value||''):'',
-    estado:mTipo==='deuda'?'impago':'pago',fijo:false};
+    fecha:nowStamp(),venc:(mTipo==='deuda'||mTipo==='medeben')?($('#mVenc').value||''):'',
+    estado:(mTipo==='deuda'||mTipo==='medeben')?'impago':'pago',fijo:false};
   if(cat===EXCEDENTE_CAT||desc===EXCEDENTE_DESC){
     m.tipo='ingreso';m.estado='pago';m.venc='';m.fijo=false;m.autoExcedente=false;m.excedenteManual=true;
   }
@@ -1530,15 +1649,16 @@ function toggleAlertsBox(){
 function render(){
   const ym=$('#monthSel').value||todayYM();
   const changed=ensureExcedentesThrough(ym);
+  autoAcreditarMeDeben();
   save();
   if(changed){const cur=$('#monthSel').value||ym;buildMonths();$('#monthSel').value=cur;}
   const movs=state.movs.filter(m=>monthKey(m.venc||m.fecha)===ym)
     .sort((a,b)=>movSortTime(b)-movSortTime(a));
 
-  const ing=movs.filter(m=>m.tipo==='ingreso').reduce((s,m)=>s+m.monto,0);
-  const gas=movs.filter(m=>m.tipo!=='ingreso').reduce((s,m)=>s+m.monto,0);
+  const ing=movs.filter(isIncome).reduce((s,m)=>s+m.monto,0);
+  const gas=movs.filter(isOutflow).reduce((s,m)=>s+m.monto,0);
   const bal=ing-gas;
-  const restante=movs.filter(m=>m.tipo!=='ingreso'&&m.estado==='impago').reduce((s,m)=>s+m.monto,0);
+  const restante=movs.filter(m=>isOutflow(m)&&m.estado==='impago').reduce((s,m)=>s+m.monto,0);
 
   $('#cards').innerHTML=
     '<div class="kpi ing"><div class="lab">Ingresos</div><div class="val">'+money(ing)+'</div></div>'+
@@ -1551,10 +1671,14 @@ function render(){
   $('#goalTxt').textContent=money(ing)+' de '+money(state.goalMin)+'–'+money(state.goalMax)+' · '+pct+'%';
 
   // Alertas
-  const pend=state.movs.filter(m=>m.tipo!=='ingreso'&&m.estado==='impago'&&m.venc)
+  const pend=state.movs.filter(m=>isOutflow(m)&&m.estado==='impago'&&m.venc)
+    .map(m=>Object.assign({},m,{d:daysUntil(m.venc)}))
+    .filter(m=>m.d!==null&&m.d<=10).sort((a,b)=>a.d-b.d);
+  const cobrar=state.movs.filter(m=>isReceivablePending(m)&&m.venc)
     .map(m=>Object.assign({},m,{d:daysUntil(m.venc)}))
     .filter(m=>m.d!==null&&m.d<=10).sort((a,b)=>a.d-b.d);
   const alE=$('#alerts');
+  let alHtml='';
   if(pend.length){
     const open=localStorage.getItem('bois_alerts_open')!=='0';
     const body=pend.map(m=>{
@@ -1565,11 +1689,21 @@ function render(){
         else{cls='y';txt='Vence en '+m.d+' días';}
         return '<div class="al '+cls+'"><div><div class="desc">'+esc(m.desc)+'</div><div class="when">'+txt+' · '+labelMonth(monthKey(m.venc))+'</div></div><div class="amt">'+money(m.monto)+'</div><button onclick="togglePago(\''+m.id+'\')">'+IC.check+'Pagué</button></div>';
       }).join('');
-    alE.innerHTML='<div class="alert-head toggle '+(open?'':'closed')+'" onclick="toggleAlertsBox()">'+IC.bell+' Cuentas por pagar <span class="badge">'+pend.length+'</span><span class="chev">▾</span></div>'+
+    alHtml+='<div class="alert-head toggle '+(open?'':'closed')+'" onclick="toggleAlertsBox()">'+IC.bell+' Cuentas por pagar <span class="badge">'+pend.length+'</span><span class="chev">▾</span></div>'+
       '<div id="alertsBody" style="display:'+(open?'block':'none')+'">'+body+'</div>';
-  }else{
-    alE.innerHTML='<div class="empty-ok">'+IC.check+'Estás al día. No hay vencimientos próximos.</div>';
   }
+  if(cobrar.length){
+    const body=cobrar.map(m=>{
+        let txt='';
+        if(m.d<0)txt='A acreditar hace '+Math.abs(m.d)+(Math.abs(m.d)!==1?' días':' día');
+        else if(m.d===0)txt='Se acredita HOY';
+        else txt='Cobro en '+m.d+(m.d!==1?' días':' día');
+        return '<div class="al g"><div><div class="desc">'+esc(m.desc)+'</div><div class="when">'+txt+' · '+labelMonth(monthKey(m.venc))+'</div></div><div class="amt">'+money(m.monto)+'</div><button onclick="togglePago(\''+m.id+'\')">'+IC.check+'Cobré</button></div>';
+      }).join('');
+    alHtml+='<div class="alert-head" style="margin-top:'+(pend.length?'14px':'0')+'">'+IC.bell+' Por cobrar <span class="badge" style="background:var(--ok)">'+cobrar.length+'</span></div>'+body;
+  }
+  if(!alHtml)alHtml='<div class="empty-ok">'+IC.check+'Estás al día. No hay vencimientos ni cobros próximos.</div>';
+  alE.innerHTML=alHtml;
 
   $('#listCount').textContent=labelMonth(ym)+' · '+movs.length+' registros';
 
@@ -1577,12 +1711,17 @@ function render(){
   if(view==='met'){renderMetrics(ym);return;}
 
   $('#items').innerHTML = movs.length?movs.map(m=>{
-    const isIn=m.tipo==='ingreso';
-    const sign=isIn?'+':'−';
-    const vtxt=m.tipo==='deuda'&&m.venc?('Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha)):('Cargado '+fmtDMTime(m.fecha));
+    const inSide=incomeSide(m);
+    const sign=inSide?'+':'−';
+    let vtxt='Cargado '+fmtDMTime(m.fecha);
+    if(m.tipo==='deuda'&&m.venc)vtxt='Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha);
+    else if(m.tipo==='medeben'&&m.venc)vtxt=(m.estado==='pago'?'Acreditado ':'Cobro ')+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha);
     const manualTag=isManualExcedente(m)?' <span class="cat-tag">Manual</span>':'';
-    const status=!isIn?(m.tipo==='deuda'?'<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>':'<span class="pill pago">Pagado</span>'):'';
-    return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?IC.repeat:'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span>'+manualTag+' '+vtxt+'</div></div><div class="amt '+(isIn?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+status+'<button class="ico" onclick="openEdit(\''+m.id+'\')">'+IC.pencil+'</button><button class="ico" onclick="delMov(\''+m.id+'\')">'+IC.trash+'</button></div></div>';
+    let status='';
+    if(m.tipo==='deuda')status='<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>';
+    else if(m.tipo==='medeben')status='<button class="pill '+(m.estado==='pago'?'cobrado':'cobrar')+'" onclick="togglePago(\''+m.id+'\')">'+(m.estado==='pago'?'Cobrado':'Cobrar')+'</button>';
+    else if(m.tipo==='gasto')status='<span class="pill pago">Pagado</span>';
+    return '<div class="item"><span class="dot '+m.tipo+'"></span><div><div class="d1">'+m.desc+' '+(m.fijo?IC.repeat:'')+'</div><div class="d2"><span class="cat-tag">'+m.cat+'</span>'+manualTag+' '+vtxt+'</div></div><div class="amt '+(inSide?'in':'out')+'">'+sign+money(m.monto)+'</div><div class="acts">'+status+'<button class="ico" onclick="openEdit(\''+m.id+'\')">'+IC.pencil+'</button><button class="ico" onclick="delMov(\''+m.id+'\')">'+IC.trash+'</button></div></div>';
   }).join(''):'<div style="padding:30px;text-align:center;color:var(--muted);font-weight:700">Sin movimientos este mes. Cargá uno arriba</div>';
 }
 
@@ -1604,10 +1743,10 @@ function renderCalendar(ym){
     const isoD=ym+'-'+String(d).padStart(2,'0');
     const items=byDay[d]||[];
     const dots=items.slice(0,5).map(m=>{
-      const overdue=m.tipo!=='ingreso'&&m.estado==='impago'&&daysUntil(m.venc||m.fecha)<0;
+      const overdue=isOutflow(m)&&m.estado==='impago'&&daysUntil(m.venc||m.fecha)<0;
       return '<span class="cdot '+m.tipo+(overdue?' od':'')+'"></span>';
     }).join('');
-    const due=items.filter(m=>m.tipo!=='ingreso'&&m.estado==='impago').reduce((s,m)=>s+m.monto,0);
+    const due=items.filter(m=>isOutflow(m)&&m.estado==='impago').reduce((s,m)=>s+m.monto,0);
     html+='<div class="cc '+(items.length?'has':'')+' '+(isoD===tIso?'today':'')+'" onclick="dayDetail(\''+isoD+'\')"><span class="cnum">'+d+'</span><span class="cdots">'+dots+'</span>'+(due?'<span class="cdue">'+money(due)+'</span>':'')+'</div>';
   }
   html+='</div>';
@@ -1620,16 +1759,16 @@ function renderMetrics(ym){
   const months=lastNMonthsEndingAt(selectedYm,3);
   const data=months.map(k=>{
     const ms=state.movs.filter(m=>monthKey(m.venc||m.fecha)===k);
-    const ing=ms.filter(m=>m.tipo==='ingreso').reduce((s,m)=>s+m.monto,0);
-    const gas=ms.filter(m=>m.tipo!=='ingreso').reduce((s,m)=>s+m.monto,0);
-    const fij=ms.filter(m=>m.tipo!=='ingreso'&&m.fijo).reduce((s,m)=>s+m.monto,0);
+    const ing=ms.filter(isIncome).reduce((s,m)=>s+m.monto,0);
+    const gas=ms.filter(isOutflow).reduce((s,m)=>s+m.monto,0);
+    const fij=ms.filter(m=>isOutflow(m)&&m.fijo).reduce((s,m)=>s+m.monto,0);
     return {k,ing,gas,fij,bal:ing-gas};
   });
 
   const balProm=data.length?Math.round(data.reduce((s,d)=>s+d.bal,0)/data.length):0;
   const topGasMes=data.slice().sort((a,b)=>b.gas-a.gas)[0];
 
-  const msSel=state.movs.filter(m=>monthKey(m.venc||m.fecha)===selectedYm&&m.tipo!=='ingreso');
+  const msSel=state.movs.filter(m=>monthKey(m.venc||m.fecha)===selectedYm&&isOutflow(m));
   const byCatSel={};
   msSel.forEach(m=>{
     if(!byCatSel[m.cat]) byCatSel[m.cat]={monto:0,cant:0};
@@ -1642,7 +1781,7 @@ function renderMetrics(ym){
   const totCatSel=catsSel.reduce((s,x)=>s+x.monto,0);
   const topCat=catsSel[0];
 
-  const msCurrent=state.movs.filter(m=>monthKey(m.venc||m.fecha)===currentYm&&m.tipo!=='ingreso');
+  const msCurrent=state.movs.filter(m=>monthKey(m.venc||m.fecha)===currentYm&&isOutflow(m));
   const byCatCurrent={};
   msCurrent.forEach(m=>{
     if(!byCatCurrent[m.cat]) byCatCurrent[m.cat]={monto:0,cant:0};
@@ -1754,10 +1893,15 @@ function dayDetail(isoD){
   const items=state.movs.filter(m=>dateOnly(m.venc||m.fecha)===isoD).sort((a,b)=>movSortTime(b)-movSortTime(a));
   $('#dayTitle').textContent='Día '+isoD.split('-').reverse().join('/');
   $('#dayItems').innerHTML=items.length?items.map(m=>{
-    const isIn=m.tipo==='ingreso';
-    const status=!isIn?(m.tipo==='deuda'?'<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\');dayDetail(\''+isoD+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>':'<span class="pill pago">Pagado</span>'):'';
-    const meta=(m.tipo==='deuda'&&m.venc)?(m.cat+' · Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha)):(m.cat+(isManualExcedente(m)?' · Manual':'')+' · Cargado '+fmtDMTime(m.fecha));
-    return '<div class="dayrow"><span class="dot '+m.tipo+'"></span><div style="flex:1"><div style="font-weight:800">'+m.desc+'</div><div class="sub">'+meta+'</div></div><div class="amt '+(isIn?'in':'out')+'" style="font-weight:900">'+(isIn?'+':'−')+money(m.monto)+'</div>'+status+'</div>';
+    const inSide=incomeSide(m);
+    let status='';
+    if(m.tipo==='deuda')status='<button class="pill '+m.estado+'" onclick="togglePago(\''+m.id+'\');dayDetail(\''+isoD+'\')">'+(m.estado==='pago'?'Pagado':'Impago')+'</button>';
+    else if(m.tipo==='medeben')status='<button class="pill '+(m.estado==='pago'?'cobrado':'cobrar')+'" onclick="togglePago(\''+m.id+'\');dayDetail(\''+isoD+'\')">'+(m.estado==='pago'?'Cobrado':'Cobrar')+'</button>';
+    else if(m.tipo==='gasto')status='<span class="pill pago">Pagado</span>';
+    let meta=m.cat+(isManualExcedente(m)?' · Manual':'')+' · Cargado '+fmtDMTime(m.fecha);
+    if(m.tipo==='deuda'&&m.venc)meta=m.cat+' · Vence '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha);
+    else if(m.tipo==='medeben'&&m.venc)meta=m.cat+' · Cobro '+fmtDM(m.venc)+' · Cargado '+fmtDMTime(m.fecha);
+    return '<div class="dayrow"><span class="dot '+m.tipo+'"></span><div style="flex:1"><div style="font-weight:800">'+m.desc+'</div><div class="sub">'+meta+'</div></div><div class="amt '+(inSide?'in':'out')+'" style="font-weight:900">'+(inSide?'+':'−')+money(m.monto)+'</div>'+status+'</div>';
   }).join(''):'<div class="sub">Sin movimientos este día.</div>';
   $('#ovDay').classList.add('show');
 }
